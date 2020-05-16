@@ -18,8 +18,10 @@ class _EventDetailsViewState extends State<EventDetailsView> {
   @override
   void initState() {
     date = DateTime.parse(widget.arguments['date']);
-    startTime = TimeOfDay.fromDateTime(DateTime.parse(widget.arguments['start-time']));
-    endTime = TimeOfDay.fromDateTime(DateTime.parse(widget.arguments['end-time']));
+    startTime =
+        TimeOfDay.fromDateTime(DateTime.parse(widget.arguments['start-time']));
+    endTime =
+        TimeOfDay.fromDateTime(DateTime.parse(widget.arguments['end-time']));
     super.initState();
   }
 
@@ -27,12 +29,15 @@ class _EventDetailsViewState extends State<EventDetailsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      floatingActionButton:
+          Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
         RaisedButton(
             shape: StadiumBorder(),
             onPressed: () {},
             color: Themes.DARK_BROWN_COOKIE,
-            child: Padding(padding: const EdgeInsets.all(8.0), child: Text("Attend", style: TextStyle(color: Colors.white)))),
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Attend", style: TextStyle(color: Colors.white)))),
         SizedBox(width: 12.0),
         OutlineButton(
             shape: StadiumBorder(),
@@ -40,7 +45,8 @@ class _EventDetailsViewState extends State<EventDetailsView> {
             onPressed: () {},
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Donate", style: TextStyle(color: Themes.DARK_BROWN_COOKIE)),
+              child: Text("Donate",
+                  style: TextStyle(color: Themes.DARK_BROWN_COOKIE)),
             ))
       ]),
       body: Stack(
@@ -60,7 +66,9 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                   height: MediaQuery.of(context).size.height / 4,
                 ),
                 Container(
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24.0)),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24.0)),
                   padding: EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,29 +78,44 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                         children: <Widget>[
                           Text(
                             widget.arguments['name'],
-                            style: Theme.of(context).textTheme.headline5.copyWith(fontWeight: FontWeight.bold),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                .copyWith(fontWeight: FontWeight.bold),
                           ),
                           Text(
                             widget.arguments['cost'],
-                            style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.green),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(color: Colors.green),
                           )
                         ],
                       ),
                       ListTile(
                           contentPadding: EdgeInsets.all(0.0),
                           leading: Icon(Icons.calendar_today),
-                          title: Text("${getWeek(date.weekday)}, ${getMonth(date.month)} ${date.day}, ${date.year}"),
-                          subtitle: Text("${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}"),
+                          title: Text(
+                              "${getWeek(date.weekday)}, ${getMonth(date.month)} ${date.day}, ${date.year}"),
+                          subtitle: Text(
+                              "${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}"),
                           trailing: Text(widget.arguments['frequency'])),
                       ListTile(
                           contentPadding: EdgeInsets.all(0.0),
                           title: Text(widget.arguments['place'] ?? "N/A"),
                           leading: Icon(Icons.location_on),
                           subtitle: Text(widget.arguments['place'] ?? "N/A")),
-                      ListTile(contentPadding: EdgeInsets.all(0.0), title: Text("${widget.arguments['fee']}"), leading: Icon(Icons.event_seat)),
-                      Text("Description", style: Theme.of(context).textTheme.headline6),
+                      ListTile(
+                          contentPadding: EdgeInsets.all(0.0),
+                          title: Text("${widget.arguments['fee']}"),
+                          leading: Icon(Icons.event_seat)),
+                      Text("Description",
+                          style: Theme.of(context).textTheme.headline6),
                       Text(widget.arguments['description'],
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(fontWeight: FontWeight.normal, color: Colors.grey), maxLines: 4),
+                          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey),
+                          maxLines: 4),
                       Row(children: <Widget>[]),
                     ],
                   ),

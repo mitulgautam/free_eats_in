@@ -4,6 +4,7 @@ class Strings {
   static const String EVENT_DETAILS = '/event-details';
   static const String PROFILE = '/profile';
   static const String SPLASH = '/splash';
+  static const String LOGIN = '/login';
 }
 
 enum Cost { FREE, PAID }

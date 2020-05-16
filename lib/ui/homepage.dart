@@ -28,11 +28,22 @@ class _HomepageState extends State<Homepage> {
                 Text("FreeEats.in", style: TextStyle(fontSize: 26.0)),
                 Divider(color: Colors.grey),
                 FlatButton(
-                    child: Row(children: <Widget>[Icon(Icons.person_outline), Padding(padding: const EdgeInsets.all(8.0), child: Text("Profile"))]),
-                    onPressed: () => Navigator.pushNamed(context, Strings.PROFILE)),
+                    child: Row(children: <Widget>[
+                      Icon(Icons.person_outline),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Profile"))
+                    ]),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, Strings.PROFILE)),
                 Divider(color: Colors.grey),
                 FlatButton(
-                    child: Row(children: <Widget>[Icon(Icons.help_outline), Padding(padding: const EdgeInsets.all(8.0), child: Text("Help and feedback"))]),
+                    child: Row(children: <Widget>[
+                      Icon(Icons.help_outline),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Help and feedback"))
+                    ]),
                     onPressed: () {}),
               ],
             ),
@@ -45,7 +56,11 @@ class _HomepageState extends State<Homepage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: RaisedButton(
-        onPressed: () => showDialog(context: context, builder: (context) => _currentPage == 0 ? AddNewEvent() : AddHelpEvent(), barrierDismissible: false),
+        onPressed: () => showDialog(
+            context: context,
+            builder: (context) =>
+                _currentPage == 0 ? AddNewEvent() : AddHelpEvent(),
+            barrierDismissible: false),
         color: Themes.DARK_BROWN_COOKIE,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -61,7 +76,8 @@ class _HomepageState extends State<Homepage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Food Point")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text("Food Point")),
           BottomNavigationBarItem(icon: Icon(Icons.help), title: Text("Help"))
         ],
         currentIndex: _currentPage,
