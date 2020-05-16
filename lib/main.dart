@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/routes.dart';
-import 'package:freeeatsin/ui/homepage.dart';
 import 'package:freeeatsin/ui/login.dart';
 
 void main() => runApp(App());
@@ -19,6 +18,7 @@ class _AppState extends State<App> {
 //      initialRoute: Strings.HOMEPAGE,
         home: Login(),
         onGenerateRoute: Router.onGenerateRoute,
-        theme: ThemeData(fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown));
+        theme: ThemeData(
+            fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown));
   }
 }

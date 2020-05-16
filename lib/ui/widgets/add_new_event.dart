@@ -34,7 +34,8 @@ class _AddNewEventState extends State<AddNewEvent> {
       child: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 16.0),
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16.0, top: 16.0, bottom: 16.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -43,7 +44,8 @@ class _AddNewEventState extends State<AddNewEvent> {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () async {
-                      _image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                      _image = await ImagePicker.pickImage(
+                          source: ImageSource.gallery);
                       setState(() {});
                     },
                     child: DottedBorder(
@@ -69,10 +71,15 @@ class _AddNewEventState extends State<AddNewEvent> {
                       ),
                     ),
                   ),
-                  TextFormField(decoration: InputDecoration(labelText: "Event Name")),
-                  TextFormField(decoration: InputDecoration(labelText: "Organizer Name")),
-                  TextFormField(decoration: InputDecoration(labelText: "Event Description")),
-                  TextFormField(decoration: InputDecoration(labelText: "Address")),
+                  TextFormField(
+                      decoration: InputDecoration(labelText: "Event Name")),
+                  TextFormField(
+                      decoration: InputDecoration(labelText: "Organizer Name")),
+                  TextFormField(
+                      decoration:
+                          InputDecoration(labelText: "Event Description")),
+                  TextFormField(
+                      decoration: InputDecoration(labelText: "Address")),
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Text("Fee Type"),
@@ -84,11 +91,21 @@ class _AddNewEventState extends State<AddNewEvent> {
                         children: <Widget>[
                           Text(
                             _costType == Cost.PAID ? "PAID" : "FREE",
-                            style: TextStyle(fontSize: 36.0, color: _costType == Cost.PAID ? Colors.amber : Colors.green),
+                            style: TextStyle(
+                                fontSize: 36.0,
+                                color: _costType == Cost.PAID
+                                    ? Colors.amber
+                                    : Colors.green),
                           ),
                           Text(
-                            _costType == Cost.PAID ? "Fill Event Fees" : "OMG! Its Free",
-                            style: TextStyle(fontSize: 12.0, color: _costType == Cost.PAID ? Colors.amber : Colors.green),
+                            _costType == Cost.PAID
+                                ? "Fill Event Fees"
+                                : "OMG! Its Free",
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                color: _costType == Cost.PAID
+                                    ? Colors.amber
+                                    : Colors.green),
                           ),
                         ],
                       ),
@@ -103,8 +120,10 @@ class _AddNewEventState extends State<AddNewEvent> {
                                     _costType = _ ? Cost.FREE : Cost.PAID;
                                   });
                                 },
-                                activeThumbImage: AssetImage("assets/images/donut.png"),
-                                inactiveThumbImage: AssetImage("assets/images/coin.png"))),
+                                activeThumbImage:
+                                    AssetImage("assets/images/donut.png"),
+                                inactiveThumbImage:
+                                    AssetImage("assets/images/coin.png"))),
                       )
                     ],
                   ),
@@ -119,7 +138,8 @@ class _AddNewEventState extends State<AddNewEvent> {
                       Expanded(
                         child: TextFormField(
                           validator: (_) {
-                            if (_.length < 3) return "Food name should be greater than 3";
+                            if (_.length < 3)
+                              return "Food name should be greater than 3";
                             return null;
                           },
                           decoration: InputDecoration(labelText: "Items"),
@@ -135,7 +155,8 @@ class _AddNewEventState extends State<AddNewEvent> {
                                 _itemList.add(_item.text.toString());
                               });
                               _item.clear();
-                              _animListState.currentState.insertItem(0, duration: Duration(milliseconds: 0));
+                              _animListState.currentState.insertItem(0,
+                                  duration: Duration(milliseconds: 0));
                             }
                           })
                     ],
@@ -148,13 +169,20 @@ class _AddNewEventState extends State<AddNewEvent> {
                     itemBuilder: (context, i, _anim) => Row(
                       children: <Widget>[
                         IconButton(
-                            icon: Icon(Icons.close, color: Themes.DARK_BROWN_COOKIE),
+                            icon: Icon(Icons.close,
+                                color: Themes.DARK_BROWN_COOKIE),
                             onPressed: () {
-                              _animListState.currentState
-                                  .removeItem(i, (context, animation) => Text(_itemList[i], style: TextStyle(color: Themes.DARK_BROWN_COOKIE)));
+                              _animListState.currentState.removeItem(
+                                  i,
+                                  (context, animation) => Text(_itemList[i],
+                                      style: TextStyle(
+                                          color: Themes.DARK_BROWN_COOKIE)));
                               _itemList.removeAt(i);
                             }),
-                        Expanded(child: Text(_itemList[i], style: TextStyle(color: Themes.DARK_BROWN_COOKIE)))
+                        Expanded(
+                            child: Text(_itemList[i],
+                                style:
+                                    TextStyle(color: Themes.DARK_BROWN_COOKIE)))
                       ],
                     ),
                   ),
@@ -172,10 +200,16 @@ class _AddNewEventState extends State<AddNewEvent> {
                         ],
                         selectedColor: Colors.white,
                         fillColor: Themes.DARK_BROWN_COOKIE,
-                        isSelected: [_eventFrequency == Frequency.ONCE, _eventFrequency == Frequency.DAILY, _eventFrequency == Frequency.RANDOM],
+                        isSelected: [
+                          _eventFrequency == Frequency.ONCE,
+                          _eventFrequency == Frequency.DAILY,
+                          _eventFrequency == Frequency.RANDOM
+                        ],
                         onPressed: (_) {
                           setState(() {
-                            _eventFrequency = _ == 0 ? Frequency.ONCE : _ == 1 ? Frequency.DAILY : Frequency.RANDOM;
+                            _eventFrequency = _ == 0
+                                ? Frequency.ONCE
+                                : _ == 1 ? Frequency.DAILY : Frequency.RANDOM;
                           });
                         },
                         borderRadius: BorderRadius.circular(8.0)),
@@ -192,7 +226,8 @@ class _AddNewEventState extends State<AddNewEvent> {
                               context: context,
                               initialDate: _currentDateTime,
                               firstDate: _currentDateTime,
-                              lastDate: DateTime(_currentDateTime.year + 1, _currentDateTime.month, _currentDateTime.day),
+                              lastDate: DateTime(_currentDateTime.year + 1,
+                                  _currentDateTime.month, _currentDateTime.day),
                               confirmText: "Select FROM",
                               cancelText: "Cancel",
                             );
@@ -203,13 +238,23 @@ class _AddNewEventState extends State<AddNewEvent> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text("Date", style: TextStyle(color: Themes.DARK_BROWN_COOKIE)),
+                              Text("Date",
+                                  style: TextStyle(
+                                      color: Themes.DARK_BROWN_COOKIE)),
                               Container(
                                 color: Colors.grey[200],
-                                padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
+                                padding: EdgeInsets.only(
+                                    left: 4.0,
+                                    right: 4.0,
+                                    top: 4.0,
+                                    bottom: 4.0),
                                 child: Text(_fromDate == null
                                     ? "DD/MM/YYYY"
-                                    : _fromDate.day.toString() + "/" + _fromDate.month.toString() + "/" + _fromDate.year.toString()),
+                                    : _fromDate.day.toString() +
+                                        "/" +
+                                        _fromDate.month.toString() +
+                                        "/" +
+                                        _fromDate.year.toString()),
                               ),
                             ],
                           ),
@@ -236,12 +281,21 @@ class _AddNewEventState extends State<AddNewEvent> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text("From", style: TextStyle(color: Themes.DARK_BROWN_COOKIE)),
+                              Text("From",
+                                  style: TextStyle(
+                                      color: Themes.DARK_BROWN_COOKIE)),
                               Container(
                                   color: Colors.grey[200],
-                                  padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
-                                  child:
-                                      Text(_timeOfDayStart == null ? "Start Time" : _timeOfDayStart.hour.toString() + ":" + _timeOfDayStart.minute.toString())),
+                                  padding: EdgeInsets.only(
+                                      left: 4.0,
+                                      right: 4.0,
+                                      top: 4.0,
+                                      bottom: 4.0),
+                                  child: Text(_timeOfDayStart == null
+                                      ? "Start Time"
+                                      : _timeOfDayStart.hour.toString() +
+                                          ":" +
+                                          _timeOfDayStart.minute.toString())),
                             ],
                           ),
                         ),
@@ -267,11 +321,21 @@ class _AddNewEventState extends State<AddNewEvent> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text("To", style: TextStyle(color: Themes.DARK_BROWN_COOKIE)),
+                              Text("To",
+                                  style: TextStyle(
+                                      color: Themes.DARK_BROWN_COOKIE)),
                               Container(
                                   color: Colors.grey[200],
-                                  padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
-                                  child: Text(_timeOfDayEnd == null ? "End Time" : _timeOfDayEnd.hour.toString() + ":" + _timeOfDayEnd.minute.toString())),
+                                  padding: EdgeInsets.only(
+                                      left: 4.0,
+                                      right: 4.0,
+                                      top: 4.0,
+                                      bottom: 4.0),
+                                  child: Text(_timeOfDayEnd == null
+                                      ? "End Time"
+                                      : _timeOfDayEnd.hour.toString() +
+                                          ":" +
+                                          _timeOfDayEnd.minute.toString())),
                             ],
                           ),
                         ),
@@ -285,7 +349,8 @@ class _AddNewEventState extends State<AddNewEvent> {
                       children: <Widget>[
                         OutlineButton(
                           onPressed: () => Navigator.pop(context),
-                          borderSide: BorderSide(color: Themes.DARK_BROWN_COOKIE),
+                          borderSide:
+                              BorderSide(color: Themes.DARK_BROWN_COOKIE),
                           child: Text(
                             "Cancel",
                             style: TextStyle(color: Themes.DARK_BROWN_COOKIE),

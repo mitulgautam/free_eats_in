@@ -14,10 +14,26 @@ class _HelpState extends State<Help> {
         child: Center(
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
-      EventCard(cost: Cost.FREE, index: 1, cardType: CardType.HELP_SECTION, helpType: "Education"),
-      EventCard(cost: Cost.FREE, index: 2, cardType: CardType.HELP_SECTION, helpType: "Nearby Living"),
-      EventCard(cost: Cost.FREE, index: 3, cardType: CardType.HELP_SECTION, helpType: "Education"),
-      EventCard(cost: Cost.FREE, index: 4, cardType: CardType.HELP_SECTION, helpType: "Cloth")
+      EventCard(
+          cost: Cost.FREE,
+          index: 1,
+          cardType: CardType.HELP_SECTION,
+          helpType: "Education"),
+      EventCard(
+          cost: Cost.FREE,
+          index: 2,
+          cardType: CardType.HELP_SECTION,
+          helpType: "Nearby Living"),
+      EventCard(
+          cost: Cost.FREE,
+          index: 3,
+          cardType: CardType.HELP_SECTION,
+          helpType: "Education"),
+      EventCard(
+          cost: Cost.FREE,
+          index: 4,
+          cardType: CardType.HELP_SECTION,
+          helpType: "Cloth")
     ]))));
   }
 }
