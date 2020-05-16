@@ -5,6 +5,17 @@ class Strings {
   static const String PROFILE = '/profile';
   static const String SPLASH = '/splash';
   static const String LOGIN = '/login';
+  static const String SIGN_UP = '/signup';
+
+  //shared_preferences_keys
+  static const String LOGIN_NUMBER = "login_number";
+  static const String LOGIN_FIREBASE_UID = "firebase_uid";
+
+  //API calling links
+  static const String API_BASE_URL = "http://35.184.81.193:3000/";
+  static const String API_USER_LOGIN = "user/login";
+  static const String API_USER_SIGN_UP = "user/signup";
+  static const String API_USER_PROFILE = "user/profile";
 }
 
 enum Cost { FREE, PAID }

@@ -4,6 +4,7 @@ import 'package:freeeatsin/ui/event_details_view.dart';
 import 'package:freeeatsin/ui/homepage.dart';
 import 'package:freeeatsin/ui/login.dart';
 import 'package:freeeatsin/ui/profile_view.dart';
+import 'package:freeeatsin/ui/sign_up.dart';
 import 'package:freeeatsin/ui/widgets/add_new_event.dart';
 
 class Router {
@@ -13,6 +14,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => Homepage());
       case Strings.LOGIN:
         return MaterialPageRoute(builder: (_) => Login());
+      case Strings.SIGN_UP:
+        return MaterialPageRoute(
+            builder: (_) => SignUp(arguments: settings.arguments));
       case Strings.ADD_EVENT:
         return MaterialPageRoute(builder: (_) => AddNewEvent());
       case Strings.PROFILE:

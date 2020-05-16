@@ -1,0 +1,85 @@
+// To parse this JSON data, do
+//
+//     final createEventModel = createEventModelFromJson(jsonString);
+
+import 'dart:convert';
+
+CreateEventModel createEventModelFromJson(String str) => CreateEventModel.fromJson(json.decode(str));
+
+String createEventModelToJson(CreateEventModel data) => json.encode(data.toJson());
+
+class CreateEventModel {
+  String name;
+  String address;
+  String city;
+  String place;
+  String cost;
+  String fee;
+  String frequency;
+  String items;
+  String date;
+  String startTime;
+  String endTime;
+  String banner;
+  String description;
+  String eventOrganizer;
+  String postBy;
+  int userId;
+
+  CreateEventModel({
+    this.name,
+    this.address,
+    this.city,
+    this.place,
+    this.cost,
+    this.fee,
+    this.frequency,
+    this.items,
+    this.date,
+    this.startTime,
+    this.endTime,
+    this.banner,
+    this.description,
+    this.eventOrganizer,
+    this.postBy,
+    this.userId,
+  });
+
+  factory CreateEventModel.fromJson(Map<String, dynamic> json) => CreateEventModel(
+    name: json["name"],
+    address: json["address"],
+    city: json["city"],
+    place: json["place"],
+    cost: json["cost"],
+    fee: json["fee"],
+    frequency: json["frequency"],
+    items: json["items"],
+    date: json["date"],
+    startTime: json["start_time"],
+    endTime: json["end_time"],
+    banner: json["banner"],
+    description: json["description"],
+    eventOrganizer: json["event_organizer"],
+    postBy: json["post_by"],
+    userId: json["user_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "address": address,
+    "city": city,
+    "place": place,
+    "cost": cost,
+    "fee": fee,
+    "frequency": frequency,
+    "items": items,
+    "date": date,
+    "start_time": startTime,
+    "end_time": endTime,
+    "banner": banner,
+    "description": description,
+    "event_organizer": eventOrganizer,
+    "post_by": postBy,
+    "user_id": userId,
+  };
+}
