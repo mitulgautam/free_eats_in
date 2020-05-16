@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/resources/themes.dart';
 
 class Login extends StatefulWidget {
@@ -10,6 +12,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _spacer16 = SizedBox(height: 16.0);
   final _spacer8 = SizedBox(height: 8.0);
+  final _mobileState = GlobalKey<FormState>();
   final _otpState = GlobalKey<FormState>();
   final _mobileNumber = TextEditingController();
   final _otpVal1 = TextEditingController();
@@ -25,6 +28,15 @@ class _LoginState extends State<Login> {
   final focusNode5 = FocusNode();
   final focusNode6 = FocusNode();
   bool _isOtpScree = false;
+  String _verificationId;
+  FirebaseAuth _firebaseAuth;
+  final _scaffold = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    _firebaseAuth = FirebaseAuth.instance;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,33 +69,42 @@ class _LoginState extends State<Login> {
                   style: TextStyle(fontSize: 16.0, color: Colors.black45)),
               _spacer8,
               Form(
-                  key: _otpState,
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width * .7,
-                      child: TextFormField(
-                          controller: _mobileNumber,
-                          textAlign: TextAlign.center,
-                          maxLength: 10,
-                          validator: (_) {
-                            return _.length < 10
-                                ? "Mobile number should be equal to 10"
-                                : null;
-                          },
-                          decoration: InputDecoration(
-                              hintText: "+91 1234567890",
-                              hintStyle: TextStyle(color: Colors.black12)),
-                          keyboardType: TextInputType.number,
-                          style:
-                              TextStyle(fontSize: 26.0, letterSpacing: 3.0)))),
+                  key: _mobileState,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * .7,
+                          child: TextFormField(
+                              controller: _mobileNumber,
+                              textAlignVertical: TextAlignVertical.bottom,
+                              textAlign: TextAlign.center,
+                              maxLength: 10,
+                              validator: (_) {
+                                return _.length < 10
+                                    ? "Mobile number should be equal to 10"
+                                    : null;
+                              },
+                              decoration: InputDecoration(
+                                  hintText: "1234567890",
+                                  hintStyle: TextStyle(color: Colors.black12)),
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  fontSize: 26.0, letterSpacing: 3.0))),
+                    ],
+                  )),
               _spacer16,
               _spacer16,
               MaterialButton(
                   onPressed: () {
-                    if (_otpState.currentState.validate()) {
-                      _otpState.currentState.save();
+                    if (_mobileState.currentState.validate()) {
+                      _mobileState.currentState.save();
                       setState(() {
                         _isOtpScree = true;
                       });
+                      signInWithOtp(_mobileNumber.text);
+                      print("MOBILE NUMBER: "+"+91"+_mobileNumber.text);
                     }
                   },
                   color: Themes.DARK_BROWN_COOKIE,
@@ -134,9 +155,29 @@ class _LoginState extends State<Login> {
               _spacer16,
               _spacer16,
               MaterialButton(
-                  onPressed: () {
-                    if (_otpState.currentState.validate()) {
-                      _otpState.currentState.save();
+                  onPressed: () async {
+                    try {
+                      if (_otpState.currentState.validate()) {
+                        _otpState.currentState.save();
+                        String code = "";
+                        code += _otpVal1.text;
+                        code += _otpVal2.text;
+                        code += _otpVal3.text;
+                        code += _otpVal4.text;
+                        code += _otpVal5.text;
+                        code += _otpVal6.text;
+                        print("OTP CODE " + code);
+                        AuthCredential _authCred =
+                            PhoneAuthProvider.getCredential(
+                                verificationId: _verificationId, smsCode: code);
+                        AuthResult result =
+                            await _firebaseAuth.signInWithCredential(_authCred);
+                        FirebaseUser _user = result.user;
+                        if (_user != null)
+                          Navigator.pushNamed(context, Strings.HOMEPAGE);
+                      }
+                    } catch (e) {
+                      print(e);
                     }
                   },
                   color: Themes.DARK_BROWN_COOKIE,
@@ -168,5 +209,25 @@ class _LoginState extends State<Login> {
             },
           )),
     );
+  }
+
+  void signInWithOtp(String number) {
+    _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: "+91" + number,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (AuthCredential cred) async {
+          AuthResult result = await _firebaseAuth.signInWithCredential(cred);
+          FirebaseUser _user = result.user;
+          if (_user != null) Navigator.pushNamed(context, Strings.HOMEPAGE);
+        },
+        verificationFailed: (AuthException authException) {
+          print(authException);
+        },
+        codeSent: (String verificationId, [int forceResendingToken]) async {
+          _verificationId = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          _verificationId = verificationId;
+        });
   }
 }
