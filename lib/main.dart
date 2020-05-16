@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/routes.dart';
 import 'package:freeeatsin/ui/homepage.dart';
+import 'package:freeeatsin/ui/login.dart';
 
 void main() => runApp(App());
 
@@ -16,7 +17,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
 //      initialRoute: Strings.HOMEPAGE,
-        home: Homepage(),
+        home: Login(),
         onGenerateRoute: Router.onGenerateRoute,
         theme: ThemeData(fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown));
   }
