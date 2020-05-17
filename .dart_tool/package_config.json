@@ -188,6 +188,12 @@
       "languageVersion": "1.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///home/mitulgautam/.pub-cache/hosted/pub.dartlang.org/nested-0.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "path",
       "rootUri": "file:///home/mitulgautam/.pub-cache/hosted/pub.dartlang.org/path-1.6.4",
       "packageUri": "lib/",
@@ -246,6 +252,12 @@
       "rootUri": "file:///home/mitulgautam/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.1"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///home/mitulgautam/.pub-cache/hosted/pub.dartlang.org/provider-4.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
     },
     {
       "name": "quiver",
@@ -344,7 +356,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-05-16T21:07:46.539159Z",
+  "generated": "2020-05-17T19:45:31.523788Z",
   "generator": "pub",
   "generatorVersion": "2.8.1"
 }

@@ -16,6 +16,8 @@ class Strings {
   static const String API_USER_LOGIN = "user/login";
   static const String API_USER_SIGN_UP = "user/signup";
   static const String API_USER_PROFILE = "user/profile";
+  static const String API_DASHBOARD_EVENTS = "events/users";
+  static const String API_POST_FOOD_POINT_EVENT= "events";
 }
 
 enum Cost { FREE, PAID }

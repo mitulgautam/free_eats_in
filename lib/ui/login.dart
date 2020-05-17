@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
+import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/resources/themes.dart';
 import 'package:freeeatsin/ui/widgets/common_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
@@ -176,7 +178,6 @@ class _LoginState extends State<Login> {
                         code += _otpVal4.text;
                         code += _otpVal5.text;
                         code += _otpVal6.text;
-                        print("OTP CODE " + code);
                         AuthCredential _authCred =
                             PhoneAuthProvider.getCredential(
                                 verificationId: _verificationId, smsCode: code);
@@ -197,6 +198,9 @@ class _LoginState extends State<Login> {
                               Strings.LOGIN_NUMBER: "+91" + _mobileNumber.text
                             });
                           } else if (response is UserLoginResponseModel) {
+                            context
+                                .read<UserProvider>()
+                                .userLoginResponseModel = response;
                             Navigator.pushReplacementNamed(
                                 context, Strings.HOMEPAGE,
                                 arguments:

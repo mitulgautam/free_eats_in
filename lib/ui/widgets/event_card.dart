@@ -1,24 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/resources/themes.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventCard extends StatelessWidget {
-  final Cost cost;
   final int index;
-  final String helpType;
-
+  final FoodPointCard model;
+  final bool isHelp;
   final CardType cardType;
 
   const EventCard(
-      {Key key,
-      @required this.cost,
-      @required this.index,
-      this.cardType,
-      this.helpType})
+      {Key key, @required this.index, this.cardType, this.model, this.isHelp})
       : super(key: key);
 
   @override
@@ -64,7 +60,11 @@ class EventCard extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
                                           "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"))),
-                              CostTypeChip(cost: cost, helpType: helpType)
+                              CostTypeChip(
+                                  cost: model.costType.toLowerCase() == "paid"
+                                      ? Cost.PAID
+                                      : Cost.FREE,
+                                  helpType: isHelp ? "Change help code" : null)
                             ]),
                             flex: 1),
                         Expanded(
@@ -78,10 +78,9 @@ class EventCard extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: <Widget>[
-                                      Text("Akshay Patra Kitchen",
+                                      Text(model.name,
                                           style: TextStyle(fontSize: 18.0)),
-                                      Text(
-                                          "KH-001, Kavinagar, Ghaziabad, U.P. India 201001",
+                                      Text(model.address,
                                           maxLines: 2,
                                           style: GoogleFonts.quicksand(
                                               textStyle: Theme.of(context)
@@ -112,7 +111,7 @@ class EventCard extends StatelessWidget {
                                     borderSide: BorderSide(color: Themes.DARK_BROWN_COOKIE)),
                               ],
                             )*/ //this will be added in future update
-                                      helpType != null
+                                      isHelp
                                           ? Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 4.0),
@@ -136,8 +135,9 @@ class EventCard extends StatelessWidget {
                                       cardType == CardType.HELP_SECTION
                                           ? SizedBox()
                                           : RatingBar(
-                                              initialRating: 3,
-                                              minRating: 1,
+                                              initialRating:
+                                                  model.rating.roundToDouble(),
+                                              minRating: 0,
                                               itemSize: 24.0,
                                               direction: Axis.horizontal,
                                               allowHalfRating: true,
@@ -147,15 +147,12 @@ class EventCard extends StatelessWidget {
                                               itemBuilder: (context, _) => Icon(
                                                   Icons.star,
                                                   color: Colors.amber),
-                                              onRatingUpdate: (rating) {
-                                                print(rating);
-                                              }),
-                                      cost == Cost.PAID
+                                              ignoreGestures: true),
+                                      model.costType.toLowerCase() == "paid"
                                           ? Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 4.0),
-                                              child: Text(
-                                                  "₹ 100 to 200 per person",
+                                              child: Text(model.fee,
                                                   style: TextStyle(
                                                       color: Themes
                                                           .DARK_BROWN_COOKIE)))
