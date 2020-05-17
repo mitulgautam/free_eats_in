@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-CreateEventModel createEventModelFromJson(String str) => CreateEventModel.fromJson(json.decode(str));
+CreateFoodPointEventModel createEventModelFromJson(String str) => CreateFoodPointEventModel.fromJson(json.decode(str));
 
-String createEventModelToJson(CreateEventModel data) => json.encode(data.toJson());
+String createEventModelToJson(CreateFoodPointEventModel data) => json.encode(data.toJson());
 
-class CreateEventModel {
+class CreateFoodPointEventModel {
   String name;
   String address;
   String city;
@@ -26,7 +26,7 @@ class CreateEventModel {
   String postBy;
   int userId;
 
-  CreateEventModel({
+  CreateFoodPointEventModel({
     this.name,
     this.address,
     this.city,
@@ -45,7 +45,7 @@ class CreateEventModel {
     this.userId,
   });
 
-  factory CreateEventModel.fromJson(Map<String, dynamic> json) => CreateEventModel(
+  factory CreateFoodPointEventModel.fromJson(Map<String, dynamic> json) => CreateFoodPointEventModel(
     name: json["name"],
     address: json["address"],
     city: json["city"],

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
+import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/routes.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 main() {
@@ -19,11 +21,16 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: DetermineRoute(),
-        onGenerateRoute: Router.onGenerateRoute,
-        theme: ThemeData(
-            fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown));
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
+      ],
+      child: MaterialApp(
+          home: DetermineRoute(),
+          onGenerateRoute: Router.onGenerateRoute,
+          theme: ThemeData(
+              fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown)),
+    );
   }
 }
 
@@ -39,8 +46,9 @@ class _DetermineRouteState extends State<DetermineRoute> {
   void initState() {
     determineRoute().then((value) => Navigator.pushReplacementNamed(
         context, value,
-        arguments:
-            value == Strings.SIGN_UP ? {Strings.LOGIN_NUMBER: phoneNumber} : {}));
+        arguments: value == Strings.SIGN_UP
+            ? {Strings.LOGIN_NUMBER: phoneNumber}
+            : {}));
     super.initState();
   }
 
@@ -54,6 +62,7 @@ class _DetermineRouteState extends State<DetermineRoute> {
       if (userDetails is bool && userDetails == false)
         return Strings.SIGN_UP;
       else if (userDetails is UserLoginResponseModel) {
+        context.read<UserProvider>().userLoginResponseModel = userDetails;
         return Strings.HOMEPAGE;
       } else
         return Strings.LOGIN;

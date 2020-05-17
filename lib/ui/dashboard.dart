@@ -6,12 +6,12 @@ import 'package:freeeatsin/ui/widgets/add_new_event.dart';
 import 'package:freeeatsin/ui/widgets/food_point.dart';
 import 'package:freeeatsin/ui/widgets/help.dart';
 
-class Homepage extends StatefulWidget {
+class Dashboard extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _DashboardState extends State<Dashboard> {
   final _widget = [FoodPoint(), Help()];
   int _currentPage = 0;
 
@@ -59,7 +59,7 @@ class _HomepageState extends State<Homepage> {
         onPressed: () => showDialog(
             context: context,
             builder: (context) =>
-                _currentPage == 0 ? AddNewEvent() : AddHelpEvent(),
+                _currentPage == 0 ? AddNewFoodPointEvent() : AddHelpEvent(),
             barrierDismissible: false),
         color: Themes.DARK_BROWN_COOKIE,
         child: Row(
@@ -75,19 +75,19 @@ class _HomepageState extends State<Homepage> {
         shape: StadiumBorder(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home), title: Text("Food Point")),
-          BottomNavigationBarItem(icon: Icon(Icons.help), title: Text("Help"))
-        ],
-        currentIndex: _currentPage,
-        onTap: (_) {
-          setState(() {
-            _currentPage = _;
-          });
-        },
-      ),
-      body: SafeArea(child: _widget[_currentPage]),
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home), title: Text("Food Point")),
+            BottomNavigationBarItem(icon: Icon(Icons.help), title: Text("Help"))
+          ],
+          currentIndex: _currentPage,
+          onTap: (_) {
+            setState(() {
+              _currentPage = _;
+            });
+          }),
+      body:
+          SafeArea(child: IndexedStack(index: _currentPage, children: _widget)),
     );
   }
 }
