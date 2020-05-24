@@ -44,45 +44,49 @@ class Message {
   bool isVerified;
   String alternatePhoneNo;
   String lastName;
+  int eventPosted;
+  int eventAttended;
   DateTime createdDate;
   DateTime createdAt;
   DateTime updatedAt;
 
-  Message({
-    this.id,
-    this.firstName,
-    this.email,
-    this.phoneNumber,
-    this.city,
-    this.address,
-    this.image,
-    this.pincode,
-    this.isActive,
-    this.isVerified,
-    this.alternatePhoneNo,
-    this.lastName,
-    this.createdDate,
-    this.createdAt,
-    this.updatedAt,
-  });
+  Message(
+      {this.id,
+      this.firstName,
+      this.email,
+      this.phoneNumber,
+      this.city,
+      this.address,
+      this.image,
+      this.pincode,
+      this.isActive,
+      this.isVerified,
+      this.alternatePhoneNo,
+      this.lastName,
+      this.createdDate,
+      this.createdAt,
+      this.updatedAt,
+      this.eventAttended,
+      this.eventPosted});
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-        id: json["id"] ?? "",
-        firstName: json["first_name"] ?? "",
-        email: json["email"] ?? "",
-        phoneNumber: json["phone_number"] ?? "",
-        city: json["city"] ?? "",
-        address: json["address"] ?? "",
-        image: json["image"] ?? "",
-        pincode: json["pincode"] ?? "",
-        isActive: json["is_active"] ?? "",
-        isVerified: json["is_verified"] ?? "",
-        alternatePhoneNo: json["alternate_phone_no"] ?? "",
-        lastName: json["last_name"] ?? "",
-        createdDate: DateTime.parse(json["created_date"]),
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-      );
+      id: json["id"] ?? "",
+      firstName: json["first_name"] ?? "",
+      email: json["email"] ?? "",
+      phoneNumber: json["phone_number"] ?? "",
+      city: json["city"] ?? "",
+      address: json["address"] ?? "",
+      image: json["image"] ?? "",
+      pincode: json["pincode"] ?? "",
+      isActive: json["is_active"] ?? "",
+      isVerified: json["is_verified"] ?? "",
+      alternatePhoneNo: json["alternate_phone_no"] ?? "",
+      lastName: json["last_name"] ?? "",
+      createdDate: DateTime.parse(json["created_date"]),
+      createdAt: DateTime.parse(json["createdAt"]),
+      updatedAt: DateTime.parse(json["updatedAt"]),
+      eventAttended: 0,
+      eventPosted: 0);
 
   Map<String, dynamic> toJson() => {
         "id": id,

@@ -24,16 +24,25 @@ class API {
     final String url = Strings.API_BASE_URL + Strings.API_USER_SIGN_UP;
     http.Response response = await http.post(url,
         body: userSignUpModelToJson(model), headers: getHeaders());
+    print(model.profileImage);
     return response.statusCode == 200
         ? userSignUpResponseModelFromJson(response.body)
         : false;
   }
 
+  static Future<String> userProfile(int userId) async {
+    final String url = Strings.API_BASE_URL + Strings.API_USER_PROFILE;
+    http.Response response = await http.post(url,
+        body: json.encode({"user_id": userId}).toString(),
+        headers: getHeaders());
+    return response.body;
+  }
+
   static Future<dynamic> getDashboardEvents(int userId) async {
-    final String url = Strings.API_BASE_URL + Strings.API_DASHBOARD_EVENTS;
+    final String url =
+        Strings.API_BASE_URL + Strings.API_DASHBOARD_FOOD_POINT_EVENTS;
     http.Response response = await http.post(url,
         body: json.encode({"user_id": userId}), headers: getHeaders());
-    print(response.body);
     return response.statusCode == 200
         ? dashboardEventsResponseModelFromJson(response.body)
         : false;

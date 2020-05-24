@@ -5,6 +5,7 @@ import 'package:freeeatsin/ui/widgets/add_help_event.dart';
 import 'package:freeeatsin/ui/widgets/add_new_event.dart';
 import 'package:freeeatsin/ui/widgets/food_point.dart';
 import 'package:freeeatsin/ui/widgets/help.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -19,37 +20,48 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("FreeEats.in", style: TextStyle(fontSize: 26.0)),
-                Divider(color: Colors.grey),
-                FlatButton(
-                    child: Row(children: <Widget>[
-                      Icon(Icons.person_outline),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Profile"))
-                    ]),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, Strings.PROFILE)),
-                Divider(color: Colors.grey),
-                FlatButton(
-                    child: Row(children: <Widget>[
-                      Icon(Icons.help_outline),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Help and feedback"))
-                    ]),
-                    onPressed: () {}),
-              ],
-            ),
-          ),
-        ),
-      ),
+          child: SafeArea(
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("FreeEats.in", style: TextStyle(fontSize: 26.0)),
+                        Divider(color: Colors.grey),
+                        FlatButton(
+                            child: Row(children: <Widget>[
+                              Icon(Icons.person_outline),
+                              Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Profile"))
+                            ]),
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Strings.PROFILE)),
+                        Divider(color: Colors.grey),
+                        FlatButton(
+                            child: Row(children: <Widget>[
+                              Icon(Icons.help_outline),
+                              Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Help and feedback"))
+                            ]),
+                            onPressed: () {}),
+                        Divider(color: Colors.grey),
+                        FlatButton(
+                            child: Row(children: <Widget>[
+                              Icon(Icons.help_outline),
+                              Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Log Out"))
+                            ]),
+                            onPressed: () async {
+                              SharedPreferences _sharedPrefs =
+                                  await SharedPreferences.getInstance();
+                              _sharedPrefs.clear().then((value) =>
+                                  Navigator.pushReplacementNamed(
+                                      context, Strings.LOGIN));
+                            })
+                      ])))),
       appBar: AppBar(
         title: Text("FreeEats"),
         centerTitle: true,

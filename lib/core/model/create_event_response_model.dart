@@ -29,6 +29,7 @@ class CreateEventResponseModel {
 }
 
 class Message {
+  String image;
   int rating;
   int id;
   String name;
@@ -40,9 +41,8 @@ class Message {
   String frequency;
   String eventItem;
   DateTime date;
-  DateTime eventFrom;
-  DateTime eventTo;
-  String image;
+  String eventFrom;
+  String eventTo;
   String description;
   String host;
   String postBy;
@@ -51,6 +51,7 @@ class Message {
   DateTime createdAt;
 
   Message({
+    this.image,
     this.rating,
     this.id,
     this.name,
@@ -64,7 +65,6 @@ class Message {
     this.date,
     this.eventFrom,
     this.eventTo,
-    this.image,
     this.description,
     this.host,
     this.postBy,
@@ -74,6 +74,7 @@ class Message {
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
+    image: json["image"],
     rating: json["rating"],
     id: json["id"],
     name: json["name"],
@@ -85,9 +86,8 @@ class Message {
     frequency: json["frequency"],
     eventItem: json["event_item"],
     date: DateTime.parse(json["date"]),
-    eventFrom: DateTime.parse(json["event_from"]),
-    eventTo: DateTime.parse(json["event_to"]),
-    image: json["image"],
+    eventFrom: json["event_from"],
+    eventTo: json["event_to"],
     description: json["description"],
     host: json["host"],
     postBy: json["post_by"],
@@ -97,6 +97,7 @@ class Message {
   );
 
   Map<String, dynamic> toJson() => {
+    "image": image,
     "rating": rating,
     "id": id,
     "name": name,
@@ -108,9 +109,8 @@ class Message {
     "frequency": frequency,
     "event_item": eventItem,
     "date": date.toIso8601String(),
-    "event_from": eventFrom.toIso8601String(),
-    "event_to": eventTo.toIso8601String(),
-    "image": image,
+    "event_from": eventFrom,
+    "event_to": eventTo,
     "description": description,
     "host": host,
     "post_by": postBy,

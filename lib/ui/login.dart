@@ -186,7 +186,7 @@ class _LoginState extends State<Login> {
                         FirebaseUser _user = result.user;
                         if (_user != null) {
                           _sharedPrefs.setString(
-                              Strings.LOGIN_NUMBER, "+91" + _mobileNumber.text);
+                              Strings.LOGIN_NUMBER,_mobileNumber.text);
                           _sharedPrefs.setString(
                               Strings.LOGIN_FIREBASE_UID, _user.uid);
                           dynamic response =
@@ -195,7 +195,7 @@ class _LoginState extends State<Login> {
                           if (response is bool && response == false) {
                             Navigator.pushReplacementNamed(
                                 context, Strings.SIGN_UP, arguments: {
-                              Strings.LOGIN_NUMBER: "+91" + _mobileNumber.text
+                              Strings.LOGIN_NUMBER: _mobileNumber.text
                             });
                           } else if (response is UserLoginResponseModel) {
                             context

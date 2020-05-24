@@ -59,6 +59,7 @@ class _DetermineRouteState extends State<DetermineRoute> {
       return Strings.LOGIN;
     } else {
       dynamic userDetails = await API.userLogin(phoneNumber);
+      print(userDetails);
       if (userDetails is bool && userDetails == false)
         return Strings.SIGN_UP;
       else if (userDetails is UserLoginResponseModel) {
