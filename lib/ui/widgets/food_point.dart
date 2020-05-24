@@ -52,7 +52,7 @@ class _FoodPointState extends State<FoodPoint> {
                                 return ListView.builder(
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) => EventCard(
-                                        model: model.message[index],
+                                        foodPointModel: model.message[index],
                                         index: index,
                                         cardType: CardType.FOOD_POINT,
                                         isHelp: false),

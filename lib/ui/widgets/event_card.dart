@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
+import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/resources/themes.dart';
@@ -9,12 +10,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EventCard extends StatelessWidget {
   final int index;
-  final FoodPointCard model;
+  final FoodPointCard foodPointModel;
+  final HelpCard helpModel;
   final bool isHelp;
   final CardType cardType;
 
   const EventCard(
-      {Key key, @required this.index, this.cardType, this.model, this.isHelp})
+      {Key key,
+      @required this.index,
+      this.cardType,
+      this.foodPointModel,
+      this.isHelp,
+      this.helpModel})
       : super(key: key);
 
   @override
@@ -61,10 +68,13 @@ class EventCard extends StatelessWidget {
                                       child: Image.network(
                                           "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"))),
                               CostTypeChip(
-                                  cost: model.costType.toLowerCase() == "paid"
-                                      ? Cost.PAID
-                                      : Cost.FREE,
-                                  helpType: isHelp ? "Change help code" : null)
+                                  cost: foodPointModel == null
+                                      ? Cost.FREE
+                                      : foodPointModel.costType.toLowerCase() ==
+                                              "paid"
+                                          ? Cost.PAID
+                                          : Cost.FREE,
+                                  helpType: isHelp ? helpModel.type : null)
                             ]),
                             flex: 1),
                         Expanded(
@@ -78,9 +88,15 @@ class EventCard extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: <Widget>[
-                                      Text(model.name,
+                                      Text(
+                                          isHelp
+                                              ? helpModel.name
+                                              : foodPointModel.name,
                                           style: TextStyle(fontSize: 18.0)),
-                                      Text(model.address,
+                                      Text(
+                                          isHelp
+                                              ? helpModel.address
+                                              : foodPointModel.address,
                                           maxLines: 2,
                                           style: GoogleFonts.quicksand(
                                               textStyle: Theme.of(context)
@@ -119,7 +135,7 @@ class EventCard extends StatelessWidget {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Text("post by @MitulGautam",
+                                                    Text("post by @${helpModel.postBy}",
                                                         style: TextStyle(
                                                             color: Themes
                                                                 .DARK_BROWN_COOKIE)),
@@ -135,8 +151,9 @@ class EventCard extends StatelessWidget {
                                       cardType == CardType.HELP_SECTION
                                           ? SizedBox()
                                           : RatingBar(
-                                              initialRating:
-                                                  model.rating.roundToDouble(),
+                                              initialRating: foodPointModel
+                                                  .rating
+                                                  .roundToDouble(),
                                               minRating: 0,
                                               itemSize: 24.0,
                                               direction: Axis.horizontal,
@@ -148,22 +165,24 @@ class EventCard extends StatelessWidget {
                                                   Icons.star,
                                                   color: Colors.amber),
                                               ignoreGestures: true),
-                                      model.costType.toLowerCase() == "paid"
+                                      !isHelp &&
+                                              foodPointModel.costType
+                                                      .toLowerCase() ==
+                                                  "paid"
                                           ? Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 4.0),
-                                              child: Text(model.fee,
+                                              child: Text(
+                                                  "" + foodPointModel.fee,
                                                   style: TextStyle(
                                                       color: Themes
                                                           .DARK_BROWN_COOKIE)))
-                                          : SizedBox(),
+                                          : SizedBox()
                                     ]))))
                       ]),
                   cardType == CardType.HELP_SECTION
-                      ? Text(
-                          "Sample description for food help from ngo or any other society. This is done by some socirty",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis)
+                      ? Text(helpModel.description ?? "No description",
+                          maxLines: 2, overflow: TextOverflow.ellipsis)
                       : SizedBox()
                 ]))));
   }

@@ -26,7 +26,7 @@ class _AppState extends State<App> {
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
       ],
       child: MaterialApp(
-          home: DetermineRoute(),
+          home: DetermineRoute(),debugShowCheckedModeBanner: false,
           onGenerateRoute: Router.onGenerateRoute,
           theme: ThemeData(
               fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown)),

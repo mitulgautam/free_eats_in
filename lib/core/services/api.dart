@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:freeeatsin/core/model/create_event_response_model.dart';
 import 'package:freeeatsin/core/model/create_food_point_event_model.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
+import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/model/user_signup_model.dart';
 import 'package:freeeatsin/core/model/user_signup_response_model.dart';
@@ -45,6 +46,15 @@ class API {
         body: json.encode({"user_id": userId}), headers: getHeaders());
     return response.statusCode == 200
         ? dashboardEventsResponseModelFromJson(response.body)
+        : false;
+  }
+
+  static Future<dynamic> getDashboardHelps(int userId) async {
+    final String url = Strings.API_BASE_URL + Strings.API_DASHBOARD_HELP_EVENTS;
+    http.Response response = await http.post(url,
+        body: json.encode({"user_id": userId}), headers: getHeaders());
+    return response.statusCode == 200
+        ? dashboardHelpResponseModelFromJson(response.body)
         : false;
   }
 
