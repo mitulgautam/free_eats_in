@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'dart:typed_data';
-
 DashboardHelpResponseModel dashboardHelpResponseModelFromJson(String str) => DashboardHelpResponseModel.fromJson(json.decode(str));
 
 String dashboardHelpResponseModelToJson(DashboardHelpResponseModel data) => json.encode(data.toJson());
@@ -95,8 +93,8 @@ class HelpCard {
 }
 
 class Banner {
-  String type;
-  Uint8List data;
+  Type type;
+  List<int> data;
 
   Banner({
     this.type,
@@ -104,12 +102,32 @@ class Banner {
   });
 
   factory Banner.fromJson(Map<String, dynamic> json) => Banner(
-    type: json["type"],
+    type: typeValues.map[json["type"]],
     data: List<int>.from(json["data"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
-    "type": type,
+    "type": typeValues.reverse[type],
     "data": List<dynamic>.from(data.map((x) => x)),
   };
+}
+
+enum Type { BUFFER }
+
+final typeValues = EnumValues({
+  "Buffer": Type.BUFFER
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }

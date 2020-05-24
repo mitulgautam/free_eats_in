@@ -42,7 +42,6 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
 
   final City selectCity = City(city: "Select City");
   List<City> data;
-  List<City> _cities = [];
   States _states;
   City _city;
 
@@ -153,7 +152,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                   TextFormField(
                                       autovalidate: autoValidate,
                                       validator: (_) => _.length < 15
-                                          ? "Event name should be greater than 15 letters"
+                                          ? "Event description should be greater than 15 letters"
                                           : null,
                                       controller: _eventDescription,
                                       decoration: InputDecoration(
@@ -652,7 +651,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         .id;
 
                                                     //left
-                                                    _model.banner = "";
+                                                    _model.banner = _image
+                                                        .readAsBytesSync();
 
                                                     dynamic response = await API
                                                         .postFoodPointEvent(

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:freeeatsin/core/model/create_event_response_model.dart';
 import 'package:freeeatsin/core/model/create_food_point_event_model.dart';
+import 'package:freeeatsin/core/model/create_help_event_model.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
 import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
@@ -63,6 +64,16 @@ class API {
     final String url = Strings.API_BASE_URL + Strings.API_POST_FOOD_POINT_EVENT;
     http.Response response = await http.post(url,
         body: createEventModelToJson(model), headers: getHeaders());
+    return response.statusCode == 200
+        ? createEventResponseModelFromJson(response.body)
+        : false;
+  }
+
+  static Future<dynamic> postHelpEvent(CreateHelpEventModel model) async {
+    final String url = Strings.API_BASE_URL + Strings.API_POST_HELP_POST_EVENT;
+    http.Response response = await http.post(url,
+        body: createHelpEventModelToJson(model), headers: getHeaders());
+    print(createHelpEventModelToJson(model));
     print(response.body);
     return response.statusCode == 200
         ? createEventResponseModelFromJson(response.body)

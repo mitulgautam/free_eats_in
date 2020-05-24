@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'dart:typed_data';
+
 CreateFoodPointEventModel createEventModelFromJson(String str) => CreateFoodPointEventModel.fromJson(json.decode(str));
 
 String createEventModelToJson(CreateFoodPointEventModel data) => json.encode(data.toJson());
@@ -20,7 +22,7 @@ class CreateFoodPointEventModel {
   String date;
   String startTime;
   String endTime;
-  String banner;
+  Uint8List banner;
   String description;
   String eventOrganizer;
   String postBy;
