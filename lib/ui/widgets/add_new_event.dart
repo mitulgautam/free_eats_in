@@ -614,8 +614,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         _address.text;
                                                     _model.cost =
                                                         _costType == Cost.FREE
-                                                            ? "free"
-                                                            : "paid";
+                                                            ? "FREE"
+                                                            : "PAID";
                                                     _costType == Cost.FREE
                                                         ? _model.fee = ""
                                                         : _model.fee =

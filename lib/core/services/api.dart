@@ -5,6 +5,7 @@ import 'package:freeeatsin/core/model/create_food_point_event_model.dart';
 import 'package:freeeatsin/core/model/create_help_event_model.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
 import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
+import 'package:freeeatsin/core/model/food_point_single_event_model.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/model/user_signup_model.dart';
 import 'package:freeeatsin/core/model/user_signup_response_model.dart';
@@ -26,7 +27,6 @@ class API {
     final String url = Strings.API_BASE_URL + Strings.API_USER_SIGN_UP;
     http.Response response = await http.post(url,
         body: userSignUpModelToJson(model), headers: getHeaders());
-    print(model.profileImage);
     return response.statusCode == 200
         ? userSignUpResponseModelFromJson(response.body)
         : false;
@@ -73,11 +73,33 @@ class API {
     final String url = Strings.API_BASE_URL + Strings.API_POST_HELP_POST_EVENT;
     http.Response response = await http.post(url,
         body: createHelpEventModelToJson(model), headers: getHeaders());
-    print(createHelpEventModelToJson(model));
-    print(response.body);
     return response.statusCode == 200
         ? createEventResponseModelFromJson(response.body)
         : false;
+  }
+
+  static Future<dynamic> getSingleFoodPointEvent(int eventId) async {
+    final String url = Strings.API_BASE_URL + Strings.API_POST_FOOD_POINT_EVENT;
+    http.Response response =
+        await http.get(url + "/$eventId", headers: getHeaders());
+    return response.statusCode == 200
+        ? foodPointSingleEventModelFromJson(response.body)
+        : false;
+  }
+
+  static Future<bool> attendFoodPointEvent(int eventId, int userId) async {
+    final String url =
+        Strings.API_BASE_URL + Strings.API_ATTEND_FOOD_POINT_EVENT;
+    http.Response response = await http.post(url + "/$eventId",
+        headers: getHeaders(), body: json.encode({"user_id": userId}));
+    return response.statusCode == 200 ? true : false;
+  }
+
+  static Future<bool> attendFoodHelpEvent(int eventId, int userId) async {
+    final String url = Strings.API_BASE_URL + Strings.API_ATTEND_FOOD_HELP;
+    http.Response response = await http.post(url + "/$eventId",
+        headers: getHeaders(), body: json.encode({"user_id": userId}));
+    return response.statusCode == 200 ? true : false;
   }
 
   static Map<String, String> getHeaders() {
