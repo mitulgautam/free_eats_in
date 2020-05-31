@@ -4,9 +4,13 @@
 
 import 'dart:convert';
 
-DashboardEventsResponseModel dashboardEventsResponseModelFromJson(String str) => DashboardEventsResponseModel.fromJson(json.decode(str));
+import 'package:freeeatsin/resources/strings.dart';
 
-String dashboardEventsResponseModelToJson(DashboardEventsResponseModel data) => json.encode(data.toJson());
+DashboardEventsResponseModel dashboardEventsResponseModelFromJson(String str) =>
+    DashboardEventsResponseModel.fromJson(json.decode(str));
+
+String dashboardEventsResponseModelToJson(DashboardEventsResponseModel data) =>
+    json.encode(data.toJson());
 
 class DashboardEventsResponseModel {
   bool success;
@@ -17,31 +21,38 @@ class DashboardEventsResponseModel {
     this.message,
   });
 
-  factory DashboardEventsResponseModel.fromJson(Map<String, dynamic> json) => DashboardEventsResponseModel(
-    success: json["success"],
-    message: List<FoodPointCard>.from(json["message"].map((x) => FoodPointCard.fromJson(x))),
-  );
+  factory DashboardEventsResponseModel.fromJson(Map<String, dynamic> json) =>
+      DashboardEventsResponseModel(
+        success: json["success"],
+        message: List<FoodPointCard>.from(
+            json["message"].map((x) => FoodPointCard.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "message": List<dynamic>.from(message.map((x) => x.toJson())),
-  };
+        "success": success,
+        "message": List<dynamic>.from(message.map((x) => x.toJson())),
+      };
 }
 
 class FoodPointCard {
   String name;
+  int id;
+  int userId;
   String address;
   String place;
   int rating;
   String city;
-  Banner banner;
+  String banner;
   String fee;
-  String costType;
+  Cost costType;
   String startTime;
   String endTime;
+  DateTime date;
 
   FoodPointCard({
     this.name,
+    this.id,
+    this.userId,
     this.address,
     this.place,
     this.rating,
@@ -51,51 +62,55 @@ class FoodPointCard {
     this.costType,
     this.startTime,
     this.endTime,
+    this.date,
   });
 
   factory FoodPointCard.fromJson(Map<String, dynamic> json) => FoodPointCard(
-    name: json["name"],
-    address: json["address"],
-    place: json["place"],
-    rating: json["rating"],
-    city: json["city"],
-    banner: Banner.fromJson(json["banner"]),
-    fee: json["fee"],
-    costType: json["cost_type"],
-    startTime: json["start_time"],
-    endTime: json["end_time"],
-  );
+        name: json["name"],
+        id: json["id"],
+        userId: json["user_id"],
+        address: json["address"],
+        place: json["place"],
+        rating: json["rating"],
+        city: json["city"],
+        banner: json["banner"] == null ? null : json["banner"],
+        fee: json["fee"],
+        costType: costTypeValues.map[json["cost_type"]],
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+        date: DateTime.parse(json["date"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "address": address,
-    "place": place,
-    "rating": rating,
-    "city": city,
-    "banner": banner.toJson(),
-    "fee": fee,
-    "cost_type": costType,
-    "start_time": startTime,
-    "end_time": endTime,
-  };
+        "name": name,
+        "id": id,
+        "user_id": userId,
+        "address": address,
+        "place": place,
+        "rating": rating,
+        "city": city,
+        "banner": banner == null ? null : banner,
+        "fee": fee,
+        "cost_type": costTypeValues.reverse[costType],
+        "start_time": startTime,
+        "end_time": endTime,
+        "date":
+            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+      };
 }
 
-class Banner {
-  String type;
-  List<int> data;
+final costTypeValues = EnumValues({"free": Cost.FREE, "paid": Cost.PAID});
 
-  Banner({
-    this.type,
-    this.data,
-  });
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
 
-  factory Banner.fromJson(Map<String, dynamic> json) => Banner(
-    type: json["type"],
-    data: List<int>.from(json["data"].map((x) => x)),
-  );
+  EnumValues(this.map);
 
-  Map<String, dynamic> toJson() => {
-    "type": type,
-    "data": List<dynamic>.from(data.map((x) => x)),
-  };
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }

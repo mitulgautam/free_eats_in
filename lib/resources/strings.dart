@@ -20,6 +20,8 @@ class Strings {
   static const String API_POST_FOOD_POINT_EVENT = "events";
   static const String API_DASHBOARD_HELP_EVENTS = "help/users";
   static const String API_POST_HELP_POST_EVENT = "help";
+  static const String API_ATTEND_FOOD_POINT_EVENT = "events/attend";
+  static const String API_ATTEND_FOOD_HELP = "help/attend";
 }
 
 enum Cost { FREE, PAID }

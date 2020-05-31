@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
 import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
+import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/resources/themes.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class EventCard extends StatelessWidget {
   final int index;
@@ -30,21 +32,18 @@ class EventCard extends StatelessWidget {
         onTap: () {
           Navigator.pushNamed(context, Strings.EVENT_DETAILS,
               arguments: <String, String>{
-                'index': '$index',
-                'banner':
-                    'https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F62679204%2F308865560717%2F1%2Foriginal.20190521-235843?auto=compress&s=29f6b1dc86bb911823947f24b1530861',
-                'name': 'Horn OK Please',
-                'date': DateTime.now().toString(),
-                'start-time': DateTime.now().toString(),
-                'end-time': DateTime.now().toString(),
-                'address': 'Manhattan, New York City',
-                'place': 'Central Park',
-                'fee': '₹200',
-                'description':
-                    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-                'cost': 'FREE',
-                'frequency': 'DAILY',
-                'items': 'Chicken,Picken,Tiken'
+                "user_id": helpModel != null
+                    ? helpModel.userId.toString()
+                    : context
+                        .read<UserProvider>()
+                        .userLoginResponseModel
+                        .message
+                        .id
+                        .toString(),
+                "post_id": helpModel != null
+                    ? helpModel.id.toString()
+                    : foodPointModel.id.toString(),
+                "is-help": helpModel != null ? "yes" : "no"
               });
         },
         child: Card(
@@ -65,15 +64,17 @@ class EventCard extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                          "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"))),
+                                      child: Image.network(isHelp
+                                          ? helpModel.banner != null
+                                              ? helpModel.banner
+                                              : "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"
+                                          : foodPointModel.banner != null
+                                              ? foodPointModel.banner
+                                              : "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"))),
                               CostTypeChip(
                                   cost: foodPointModel == null
                                       ? Cost.FREE
-                                      : foodPointModel.costType.toLowerCase() ==
-                                              "paid"
-                                          ? Cost.PAID
-                                          : Cost.FREE,
+                                      : foodPointModel.costType,
                                   helpType: isHelp ? helpModel.type : null)
                             ]),
                             flex: 1),
@@ -105,28 +106,6 @@ class EventCard extends StatelessWidget {
                                                   .copyWith(
                                                       fontFamily: Fonts
                                                           .METROPOLIS_REGULAR))),
-/*                      Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                RaisedButton(
-                                  onPressed: () {},
-                                  child: Text("Attend", style: TextStyle(color: Colors.white)),
-                                  color: Themes.DARK_BROWN_COOKIE,
-                                  shape: StadiumBorder(),
-                                ),
-                                SizedBox(
-                                  width: 8.0,
-                                ),
-                                OutlineButton(
-                                    shape: StadiumBorder(),
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Donate",
-                                      style: TextStyle(color: Themes.DARK_BROWN_COOKIE),
-                                    ),
-                                    borderSide: BorderSide(color: Themes.DARK_BROWN_COOKIE)),
-                              ],
-                            )*/ //this will be added in future update
                                       isHelp
                                           ? Padding(
                                               padding: const EdgeInsets.only(
@@ -135,7 +114,8 @@ class EventCard extends StatelessWidget {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: <Widget>[
-                                                    Text("post by @${helpModel.postBy}",
+                                                    Text(
+                                                        "post by @${helpModel.postBy}",
                                                         style: TextStyle(
                                                             color: Themes
                                                                 .DARK_BROWN_COOKIE)),
@@ -147,6 +127,21 @@ class EventCard extends StatelessWidget {
                                                             "https://he-s3.s3.amazonaws.com/media/avatars/mitulgautam/resized/180/3ac6ba2img_20190321_221417_860.jpg",
                                                             height: 24.0))
                                                   ]))
+                                          : SizedBox(),
+                                      cardType == CardType.HELP_SECTION
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                      helpModel.description ??
+                                                          "No description",
+                                                      maxLines: 3,
+                                                      overflow: TextOverflow
+                                                          .ellipsis)),
+                                            )
                                           : SizedBox(),
                                       cardType == CardType.HELP_SECTION
                                           ? SizedBox()
@@ -164,26 +159,23 @@ class EventCard extends StatelessWidget {
                                               itemBuilder: (context, _) => Icon(
                                                   Icons.star,
                                                   color: Colors.amber),
-                                              ignoreGestures: true),
+                                              ignoreGestures: true,
+                                              onRatingUpdate:
+                                                  (double value) {}),
                                       !isHelp &&
-                                              foodPointModel.costType
-                                                      .toLowerCase() ==
-                                                  "paid"
+                                              foodPointModel.costType ==
+                                                  Cost.PAID
                                           ? Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 4.0),
                                               child: Text(
-                                                  "" + foodPointModel.fee,
+                                                  "₹" + foodPointModel.fee,
                                                   style: TextStyle(
                                                       color: Themes
                                                           .DARK_BROWN_COOKIE)))
                                           : SizedBox()
                                     ]))))
-                      ]),
-                  cardType == CardType.HELP_SECTION
-                      ? Text(helpModel.description ?? "No description",
-                          maxLines: 2, overflow: TextOverflow.ellipsis)
-                      : SizedBox()
+                      ])
                 ]))));
   }
 }

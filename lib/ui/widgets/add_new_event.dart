@@ -44,7 +44,6 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
 
   final City selectCity = City(city: "Select City");
   List<City> data;
-  List<City> _cities = [];
   States _states;
   City _city;
 
@@ -155,7 +154,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                   TextFormField(
                                       autovalidate: autoValidate,
                                       validator: (_) => _.length < 15
-                                          ? "Event name should be greater than 15 letters"
+                                          ? "Event description should be greater than 15 letters"
                                           : null,
                                       controller: _eventDescription,
                                       decoration: InputDecoration(
@@ -842,8 +841,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         _address.text;
                                                     _model.cost =
                                                         _costType == Cost.FREE
-                                                            ? "free"
-                                                            : "paid";
+                                                            ? "FREE"
+                                                            : "PAID";
                                                     _costType == Cost.FREE
                                                         ? _model.fee = ""
                                                         : _model.fee =
@@ -897,7 +896,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         .userLoginResponseModel
                                                         .message
                                                         .firstName;
-
+                                                    _model.city = _city.city;
+                                                    _model.place = _place.text;
                                                     _model.userId = context
                                                         .read<UserProvider>()
                                                         .userLoginResponseModel
@@ -905,15 +905,15 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         .id;
 
                                                     //left
-                                                    _model.banner = "";
+                                                    _model.banner = _image;
 
-                                                    dynamic response = await API
+                                                    bool response = await API
                                                         .postFoodPointEvent(
                                                             _model);
                                                     Navigator.pop(context);
                                                     Navigator.pop(context);
 
-                                                    response is bool
+                                                    !response
                                                         ? await showDialog(
                                                             context: context,
                                                             barrierDismissible:

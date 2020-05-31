@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:freeeatsin/core/model/food_point_single_event_model.dart';
+import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/themes.dart';
 
 class EventDetailsView extends StatefulWidget {
@@ -11,128 +13,218 @@ class EventDetailsView extends StatefulWidget {
 }
 
 class _EventDetailsViewState extends State<EventDetailsView> {
-  DateTime date;
-  TimeOfDay startTime;
-  TimeOfDay endTime;
+  bool isLoading = true;
+  bool isLoadingError = false;
+  FoodPointSingleEventModel _foodPointSingleEventModel;
+  bool isHelp;
 
   @override
   void initState() {
-    date = DateTime.parse(widget.arguments['date']);
-    startTime =
-        TimeOfDay.fromDateTime(DateTime.parse(widget.arguments['start-time']));
-    endTime =
-        TimeOfDay.fromDateTime(DateTime.parse(widget.arguments['end-time']));
+    isHelp = widget.arguments["is-help"] == "yes" ? true : false;
+    API
+        .getSingleFoodPointEvent(int.parse(widget.arguments["post_id"]))
+        .then((value) {
+      if (value is bool) {
+        setState(() {
+          isLoadingError = true;
+        });
+      } else {
+        _foodPointSingleEventModel = value;
+      }
+      setState(() {
+        isLoading = false;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton:
-          Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        RaisedButton(
-            shape: StadiumBorder(),
-            onPressed: () {},
-            color: Themes.DARK_BROWN_COOKIE,
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Attend", style: TextStyle(color: Colors.white)))),
-        SizedBox(width: 12.0),
-        OutlineButton(
-            shape: StadiumBorder(),
-            borderSide: BorderSide(color: Themes.DARK_BROWN_COOKIE),
-            onPressed: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Donate",
-                  style: TextStyle(color: Themes.DARK_BROWN_COOKIE)),
-            ))
-      ]),
-      body: Stack(
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Image.network(
-              widget.arguments['banner'],
-              height: MediaQuery.of(context).size.height / 4,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 4,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24.0)),
-                  padding: EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            widget.arguments['name'],
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            widget.arguments['cost'],
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(color: Colors.green),
-                          )
-                        ],
-                      ),
-                      ListTile(
-                          contentPadding: EdgeInsets.all(0.0),
-                          leading: Icon(Icons.calendar_today),
-                          title: Text(
-                              "${getWeek(date.weekday)}, ${getMonth(date.month)} ${date.day}, ${date.year}"),
-                          subtitle: Text(
-                              "${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}"),
-                          trailing: Text(widget.arguments['frequency'])),
-                      ListTile(
-                          contentPadding: EdgeInsets.all(0.0),
-                          title: Text(widget.arguments['place'] ?? "N/A"),
-                          leading: Icon(Icons.location_on),
-                          subtitle: Text(widget.arguments['place'] ?? "N/A")),
-                      ListTile(
-                          contentPadding: EdgeInsets.all(0.0),
-                          title: Text("${widget.arguments['fee']}"),
-                          leading: Icon(Icons.event_seat)),
-                      Text("Description",
-                          style: Theme.of(context).textTheme.headline6),
-                      Text(widget.arguments['description'],
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey),
-                          maxLines: 4),
-                      Row(children: <Widget>[]),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SafeArea(
-            child: IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-          )
-        ],
-      ),
-    );
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: isLoading
+            ? SizedBox()
+            : Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                RaisedButton(
+                    shape: StadiumBorder(),
+                    onPressed: () {
+                      isHelp
+                          ? API
+                              .attendFoodHelpEvent(
+                                  int.parse(widget.arguments["post_id"]),
+                                  int.parse(widget.arguments["user_id"]))
+                              .then((value) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                          title: Text("Notification"),
+                                          content: Text(value
+                                              ? "Event Attend request Successfully! Cheers"
+                                              : "Event Attend request Unsuccessfully. Please try again!"),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: Text("Okay"),
+                                                shape: StadiumBorder())
+                                          ]));
+                            })
+                          : API
+                              .attendFoodPointEvent(
+                                  int.parse(widget.arguments["post_id"]),
+                                  int.parse(widget.arguments["user_id"]))
+                              .then((value) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                          title: Text("Notification"),
+                                          content: Text(value
+                                              ? "Event Attend request Successfully! Cheers"
+                                              : "Event Attend request Unsuccessfully. Please try again!"),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: Text("Okay"),
+                                                shape: StadiumBorder())
+                                          ]));
+                            });
+                    },
+                    color: Themes.DARK_BROWN_COOKIE,
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Attend",
+                            style: TextStyle(color: Colors.white)))),
+                SizedBox(width: 12.0),
+                OutlineButton(
+                    shape: StadiumBorder(),
+                    borderSide: BorderSide(color: Themes.DARK_BROWN_COOKIE),
+                    onPressed: () {},
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Donate",
+                            style: TextStyle(color: Themes.DARK_BROWN_COOKIE))))
+              ]),
+        body: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : isLoadingError
+                ? Center(child: Text("Loading Error"))
+                : Stack(children: <Widget>[
+                    AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.network("",
+                            height: MediaQuery.of(context).size.height / 4,
+                            fit: BoxFit.cover)),
+                    SingleChildScrollView(
+                        child: Column(children: <Widget>[
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(24.0)),
+                          padding: EdgeInsets.all(24.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                          _foodPointSingleEventModel
+                                              .message[0].eventName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold)),
+                                      Text(
+                                          isHelp
+                                              ? "FREE"
+                                              : _foodPointSingleEventModel
+                                                  .message[0].eventType
+                                                  .toUpperCase(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6
+                                              .copyWith(
+                                                  color: isHelp
+                                                      ? Colors.blue
+                                                      : _foodPointSingleEventModel
+                                                                  .message[0]
+                                                                  .eventType
+                                                                  .toUpperCase() ==
+                                                              "PAID"
+                                                          ? Colors.amber
+                                                          : Colors.green))
+                                    ]),
+                                ListTile(
+                                    contentPadding: EdgeInsets.all(0.0),
+                                    leading: Icon(Icons.calendar_today),
+                                    title: Text(
+                                        "${getWeek(_foodPointSingleEventModel.message[0].date.weekday)}, ${getMonth(_foodPointSingleEventModel.message[0].date.month)} ${_foodPointSingleEventModel.message[0].date.day}, ${_foodPointSingleEventModel.message[0].date.year}"),
+                                    subtitle: Text(_foodPointSingleEventModel
+                                        .message[0].startTime),
+                                    trailing: Text(_foodPointSingleEventModel
+                                        .message[0].frequency
+                                        .toUpperCase())),
+                                ListTile(
+                                    contentPadding: EdgeInsets.all(0.0),
+                                    title: Text(
+                                        "Place not added in model" ?? "N/A"),
+                                    leading: Icon(Icons.location_on),
+                                    subtitle: Text(_foodPointSingleEventModel
+                                            .message[0].address ??
+                                        "N/A")),
+                                ListTile(
+                                    contentPadding: EdgeInsets.all(0.0),
+                                    title: Text(isHelp
+                                        ? "FREE"
+                                        : _foodPointSingleEventModel
+                                                    .message[0].eventType
+                                                    .toUpperCase() ==
+                                                "PAID"
+                                            ? "₹ " +
+                                                _foodPointSingleEventModel
+                                                    .message[0].eventFee
+                                            : "FREE EVENT"),
+                                    leading: Icon(Icons.event_seat)),
+                                Text("Description",
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                                Text(
+                                    _foodPointSingleEventModel
+                                        .message[0].description,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.grey),
+                                    maxLines: 4),
+                                SizedBox(height: 8.0),
+                                Text("Food Items",
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
+                                Text(
+                                    _foodPointSingleEventModel
+                                        .message[0].eventItem,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                            fontWeight: FontWeight.normal,
+                                            color: Colors.grey),
+                                    maxLines: 4)
+                              ]))
+                    ])),
+                    SafeArea(
+                        child: IconButton(
+                            icon: Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }))
+                  ]));
   }
 
   String getMonth(int month) {
