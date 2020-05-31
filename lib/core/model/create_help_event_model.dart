@@ -3,12 +3,15 @@
 //     final createHelpEventModel = createHelpEventModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'dart:typed_data';
 
-CreateHelpEventModel createHelpEventModelFromJson(String str) => CreateHelpEventModel.fromJson(json.decode(str));
+CreateHelpEventModel createHelpEventModelFromJson(String str) =>
+    CreateHelpEventModel.fromJson(json.decode(str));
 
-String createHelpEventModelToJson(CreateHelpEventModel data) => json.encode(data.toJson());
+String createHelpEventModelToJson(CreateHelpEventModel data) =>
+    json.encode(data.toJson());
 
 class CreateHelpEventModel {
   String name;
@@ -18,7 +21,7 @@ class CreateHelpEventModel {
   DateTime date;
   String startTime;
   String endTime;
-  Uint8List banner;
+  File banner;
   String description;
   int userId;
 
@@ -35,29 +38,31 @@ class CreateHelpEventModel {
     this.userId,
   });
 
-  factory CreateHelpEventModel.fromJson(Map<String, dynamic> json) => CreateHelpEventModel(
-    name: json["name"],
-    address: json["address"],
-    city: json["city"],
-    type: json["type"],
-    date: DateTime.parse(json["date"]),
-    startTime: json["start_time"],
-    endTime: json["end_time"],
-    banner: json["banner"],
-    description: json["description"],
-    userId: json["user_id"],
-  );
+  factory CreateHelpEventModel.fromJson(Map<String, dynamic> json) =>
+      CreateHelpEventModel(
+        name: json["name"],
+        address: json["address"],
+        city: json["city"],
+        type: json["type"],
+        date: DateTime.parse(json["date"]),
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+        banner: json["banner"],
+        description: json["description"],
+        userId: json["user_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "address": address,
-    "city": city,
-    "type": type,
-    "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-    "start_time": startTime,
-    "end_time": endTime,
-    "banner": banner,
-    "description": description,
-    "user_id": userId,
-  };
+        "name": name,
+        "address": address,
+        "city": city,
+        "type": type,
+        "date":
+            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        "start_time": startTime,
+        "end_time": endTime,
+        "banner": banner,
+        "description": description,
+        "user_id": userId,
+      };
 }

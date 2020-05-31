@@ -38,7 +38,7 @@ class _HelpState extends State<Help> {
                 } else {
                   if (snapshot.data is DashboardHelpResponseModel) {
                     DashboardHelpResponseModel model = snapshot.data;
-                    if (!model.success) return Text("Model doest return");
+                    if (!model.success) return Text("Model doesn't return");
                     if (model.message.length == 0)
                       return Center(
                           child: Text(

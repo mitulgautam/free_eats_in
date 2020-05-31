@@ -348,16 +348,13 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                                           date: _fromDate,
                                                           startTime:
                                                               "${_timeOfDayStart.hour < 10 ? ("0${_timeOfDayStart.hour}") : _timeOfDayStart.hour}:${_timeOfDayStart.minute < 10 ? ("0${_timeOfDayStart.minute}") : _timeOfDayStart.minute}:00",
-                                                          endTime:
-                                                              "${_timeOfDayStart.hour < 10 ? ("0${_timeOfDayStart.hour}") : _timeOfDayStart.hour}:${_timeOfDayStart.minute < 10 ? ("0${_timeOfDayStart.minute}") : _timeOfDayStart.minute}:00",
-                                                          banner: _image
-                                                              .readAsBytesSync());
-                                                  dynamic response = await API
+                                                          banner: _image);
+                                                  bool response = await API
                                                       .postHelpEvent(help);
                                                   Navigator.pop(context);
                                                   Navigator.pop(context);
 
-                                                  response is bool
+                                                  !response
                                                       ? await showDialog(
                                                           context: context,
                                                           barrierDismissible:

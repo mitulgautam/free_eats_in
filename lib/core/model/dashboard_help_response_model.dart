@@ -35,10 +35,10 @@ class HelpCard {
   String name;
   String address;
   String city;
-  Banner banner;
+  String banner;
   String type;
   DateTime date;
-  Banner image;
+  dynamic image;
   String postBy;
   String startTime;
   String endTime;
@@ -66,10 +66,10 @@ class HelpCard {
     name: json["name"],
     address: json["address"],
     city: json["city"],
-    banner: Banner.fromJson(json["banner"]),
+    banner: json["banner"] == null ? null : json["banner"],
     type: json["type"],
     date: DateTime.parse(json["date"]),
-    image: Banner.fromJson(json["image"]),
+    image: json["image"],
     postBy: json["post_by"],
     startTime: json["start_time"],
     endTime: json["end_time"],
@@ -82,52 +82,12 @@ class HelpCard {
     "name": name,
     "address": address,
     "city": city,
-    "banner": banner.toJson(),
+    "banner": banner == null ? null : banner,
     "type": type,
     "date": date.toIso8601String(),
-    "image": image.toJson(),
+    "image": image,
     "post_by": postBy,
     "start_time": startTime,
     "end_time": endTime,
   };
-}
-
-class Banner {
-  Type type;
-  List<int> data;
-
-  Banner({
-    this.type,
-    this.data,
-  });
-
-  factory Banner.fromJson(Map<String, dynamic> json) => Banner(
-    type: typeValues.map[json["type"]],
-    data: List<int>.from(json["data"].map((x) => x)),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "type": typeValues.reverse[type],
-    "data": List<dynamic>.from(data.map((x) => x)),
-  };
-}
-
-enum Type { BUFFER }
-
-final typeValues = EnumValues({
-  "Buffer": Type.BUFFER
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

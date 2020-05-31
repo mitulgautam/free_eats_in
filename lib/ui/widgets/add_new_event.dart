@@ -395,6 +395,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                             cancelText:
                                                                 "Cancel");
                                                     setState(() {
+                                                      _fromDate = _tempDate;
                                                       _dates.add(_tempDate);
                                                     });
                                                   },
@@ -856,7 +857,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                             : _eventFrequency ==
                                                                     Frequency
                                                                         .ONCE
-                                                                ? "once"
+                                                                ? "random"
                                                                 : "random";
                                                     List<String>
                                                         _tempListDates = [];
@@ -886,6 +887,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                             .toIso8601String());
                                                       });
                                                     }
+                                                    _model.date =
+                                                        _tempListDates;
                                                     _model.startTime =
                                                         "${_timeOfDayStart.hour < 10 ? ("0${_timeOfDayStart.hour}") : _timeOfDayStart.hour}:${_timeOfDayStart.minute < 10 ? ("0${_timeOfDayStart.minute}") : _timeOfDayStart.minute}:00";
                                                     _model.endTime =

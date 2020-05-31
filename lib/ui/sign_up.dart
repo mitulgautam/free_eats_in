@@ -238,12 +238,12 @@ class _SignUpState extends State<SignUp> {
                                               UserSignUpModel _signUpData =
                                                   UserSignUpModel(
                                                       city: _city.city,
-                                                      profileImage: _image
-                                                          .readAsBytesSync(),
+                                                      profileImage: _image,
                                                       email: _email.text,
                                                       firstName:
                                                           _firstName.text,
-                                                      lastName: _lastName.text+" ",
+                                                      lastName:
+                                                          _lastName.text + " ",
                                                       phoneNumber: widget
                                                               .arguments[
                                                           Strings.LOGIN_NUMBER],
