@@ -643,7 +643,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         .userLoginResponseModel
                                                         .message
                                                         .firstName;
-
+                                                    _model.city = _city.city;
+                                                    _model.place = _place.text;
                                                     _model.userId = context
                                                         .read<UserProvider>()
                                                         .userLoginResponseModel
@@ -651,16 +652,15 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         .id;
 
                                                     //left
-                                                    _model.banner = _image
-                                                        .readAsBytesSync();
+                                                    _model.banner = _image;
 
-                                                    dynamic response = await API
+                                                    bool response = await API
                                                         .postFoodPointEvent(
                                                             _model);
                                                     Navigator.pop(context);
                                                     Navigator.pop(context);
 
-                                                    response is bool
+                                                    !response
                                                         ? await showDialog(
                                                             context: context,
                                                             barrierDismissible:

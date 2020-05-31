@@ -39,10 +39,10 @@ class FoodPointCard {
   int id;
   int userId;
   String address;
-  Place place;
+  String place;
   int rating;
-  City city;
-  Banner banner;
+  String city;
+  String banner;
   String fee;
   Cost costType;
   String startTime;
@@ -70,10 +70,10 @@ class FoodPointCard {
         id: json["id"],
         userId: json["user_id"],
         address: json["address"],
-        place: placeValues.map[json["place"]],
+        place: json["place"],
         rating: json["rating"],
-        city: cityValues.map[json["city"]],
-        banner: Banner.fromJson(json["banner"]),
+        city: json["city"],
+        banner: json["banner"] == null ? null : json["banner"],
         fee: json["fee"],
         costType: costTypeValues.map[json["cost_type"]],
         startTime: json["start_time"],
@@ -86,10 +86,10 @@ class FoodPointCard {
         "id": id,
         "user_id": userId,
         "address": address,
-        "place": placeValues.reverse[place],
+        "place": place,
         "rating": rating,
-        "city": cityValues.reverse[city],
-        "banner": banner.toJson(),
+        "city": city,
+        "banner": banner == null ? null : banner,
         "fee": fee,
         "cost_type": costTypeValues.reverse[costType],
         "start_time": startTime,
@@ -99,43 +99,7 @@ class FoodPointCard {
       };
 }
 
-class Banner {
-  Type type;
-  List<int> data;
-
-  Banner({
-    this.type,
-    this.data,
-  });
-
-  factory Banner.fromJson(Map<String, dynamic> json) => Banner(
-        type: typeValues.map[json["type"]],
-        data: List<int>.from(json["data"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "type": typeValues.reverse[type],
-        "data": List<dynamic>.from(data.map((x) => x)),
-      };
-}
-
-enum Type { BUFFER }
-
-final typeValues = EnumValues({"Buffer": Type.BUFFER});
-
-enum City { BURARI }
-
-final cityValues = EnumValues({"Burari": City.BURARI});
-
-final costTypeValues = EnumValues({"paid": Cost.PAID, "free": Cost.FREE});
-
-enum Place { EMPTY, BRIDGE_PUCHIYA, ANGUPIDA }
-
-final placeValues = EnumValues({
-  "Angupida": Place.ANGUPIDA,
-  "Bridge Puchiya": Place.BRIDGE_PUCHIYA,
-  "": Place.EMPTY
-});
+final costTypeValues = EnumValues({"free": Cost.FREE, "paid": Cost.PAID});
 
 class EnumValues<T> {
   Map<String, T> map;

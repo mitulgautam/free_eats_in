@@ -64,8 +64,13 @@ class EventCard extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                          "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"))),
+                                      child: Image.network(isHelp
+                                          ? helpModel.banner != null
+                                              ? helpModel.banner
+                                              : "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"
+                                          : foodPointModel.banner != null
+                                              ? foodPointModel.banner
+                                              : "https://d2xww5ont629tp.cloudfront.net/event/e51cec7a-0e56-11e7-b813-12bd195f6152/2d6583cc0f22f5a0c74f711e2bf88aa5a03da3ea-256x256"))),
                               CostTypeChip(
                                   cost: foodPointModel == null
                                       ? Cost.FREE

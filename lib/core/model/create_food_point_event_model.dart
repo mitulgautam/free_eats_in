@@ -3,12 +3,13 @@
 //     final createEventModel = createEventModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:io';
 
-import 'dart:typed_data';
+CreateFoodPointEventModel createEventModelFromJson(String str) =>
+    CreateFoodPointEventModel.fromJson(json.decode(str));
 
-CreateFoodPointEventModel createEventModelFromJson(String str) => CreateFoodPointEventModel.fromJson(json.decode(str));
-
-String createEventModelToJson(CreateFoodPointEventModel data) => json.encode(data.toJson());
+String createEventModelToJson(CreateFoodPointEventModel data) =>
+    json.encode(data.toJson());
 
 class CreateFoodPointEventModel {
   String name;
@@ -22,7 +23,7 @@ class CreateFoodPointEventModel {
   String date;
   String startTime;
   String endTime;
-  Uint8List banner;
+  File banner;
   String description;
   String eventOrganizer;
   String postBy;
@@ -47,41 +48,42 @@ class CreateFoodPointEventModel {
     this.userId,
   });
 
-  factory CreateFoodPointEventModel.fromJson(Map<String, dynamic> json) => CreateFoodPointEventModel(
-    name: json["name"],
-    address: json["address"],
-    city: json["city"],
-    place: json["place"],
-    cost: json["cost"],
-    fee: json["fee"],
-    frequency: json["frequency"],
-    items: json["items"],
-    date: json["date"],
-    startTime: json["start_time"],
-    endTime: json["end_time"],
-    banner: json["banner"],
-    description: json["description"],
-    eventOrganizer: json["event_organizer"],
-    postBy: json["post_by"],
-    userId: json["user_id"],
-  );
+  factory CreateFoodPointEventModel.fromJson(Map<String, dynamic> json) =>
+      CreateFoodPointEventModel(
+        name: json["name"],
+        address: json["address"],
+        city: json["city"],
+        place: json["place"],
+        cost: json["cost"],
+        fee: json["fee"],
+        frequency: json["frequency"],
+        items: json["items"],
+        date: json["date"],
+        startTime: json["start_time"],
+        endTime: json["end_time"],
+        banner: json["banner"],
+        description: json["description"],
+        eventOrganizer: json["event_organizer"],
+        postBy: json["post_by"],
+        userId: json["user_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "address": address,
-    "city": city,
-    "place": place,
-    "cost": cost,
-    "fee": fee,
-    "frequency": frequency,
-    "items": items,
-    "date": date,
-    "start_time": startTime,
-    "end_time": endTime,
-    "banner": banner,
-    "description": description,
-    "event_organizer": eventOrganizer,
-    "post_by": postBy,
-    "user_id": userId,
-  };
+        "name": name,
+        "address": address,
+        "city": city,
+        "place": place,
+        "cost": cost,
+        "fee": fee,
+        "frequency": frequency,
+        "items": items,
+        "date": date,
+        "start_time": startTime,
+        "end_time": endTime,
+        "banner": banner,
+        "description": description,
+        "event_organizer": eventOrganizer,
+        "post_by": postBy,
+        "user_id": userId,
+      };
 }
