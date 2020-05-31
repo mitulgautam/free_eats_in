@@ -47,7 +47,7 @@ class _FoodPointState extends State<FoodPoint> {
                                 if (model.message.length == 0)
                                   return Center(
                                       child: Text(
-                                          "No event available! Checkback later.",
+                                          "No event available! Check back later.",
                                           style: TextStyle(fontSize: 18.0)));
                                 return ListView.builder(
                                     shrinkWrap: true,
