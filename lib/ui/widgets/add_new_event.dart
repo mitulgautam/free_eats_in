@@ -22,7 +22,9 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
   Cost _costType = Cost.PAID;
   Frequency _eventFrequency;
   DateTime _currentDateTime = DateTime.now();
+  List<DateTime> _dates = [];
   DateTime _fromDate;
+  DateTime _toDate;
   List<String> _itemList = [];
   TextEditingController _item;
   TextEditingController _eventName;
@@ -357,6 +359,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                           ],
                                           onPressed: (_) {
                                             setState(() {
+                                              _dates.clear();
                                               _eventFrequency = _ == 0
                                                   ? Frequency.ONCE
                                                   : _ == 1
@@ -366,67 +369,291 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                           },
                                           borderRadius:
                                               BorderRadius.circular(8.0))),
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: _eventFrequency == null
+                                          ? SizedBox()
+                                          : _eventFrequency == Frequency.ONCE
+                                              ? FlatButton(
+                                                  padding: EdgeInsets.all(0.0),
+                                                  onPressed: () async {
+                                                    DateTime _tempDate =
+                                                        await showDatePicker(
+                                                            context: context,
+                                                            initialDate:
+                                                                _currentDateTime,
+                                                            firstDate:
+                                                                _currentDateTime,
+                                                            lastDate: DateTime(
+                                                                _currentDateTime.year +
+                                                                    1,
+                                                                _currentDateTime
+                                                                    .month,
+                                                                _currentDateTime
+                                                                    .day),
+                                                            confirmText:
+                                                                "Select Date",
+                                                            cancelText:
+                                                                "Cancel");
+                                                    setState(() {
+                                                      _dates.add(_tempDate);
+                                                    });
+                                                  },
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text("Date",
+                                                            style: TextStyle(
+                                                                color: Themes
+                                                                    .DARK_BROWN_COOKIE)),
+                                                        Container(
+                                                            color: Colors
+                                                                .grey[200],
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 4.0,
+                                                                    right: 4.0,
+                                                                    top: 4.0,
+                                                                    bottom:
+                                                                        4.0),
+                                                            child: Text(_fromDate ==
+                                                                    null
+                                                                ? "DD/MM/YYYY"
+                                                                : _fromDate.day
+                                                                        .toString() +
+                                                                    "/" +
+                                                                    _fromDate
+                                                                        .month
+                                                                        .toString() +
+                                                                    "/" +
+                                                                    _fromDate
+                                                                        .year
+                                                                        .toString()))
+                                                      ]))
+                                              : _eventFrequency ==
+                                                      Frequency.DAILY
+                                                  ? Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: <Widget>[
+                                                        FlatButton(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    0.0),
+                                                            onPressed:
+                                                                () async {
+                                                              _fromDate = await showDatePicker(
+                                                                  context:
+                                                                      context,
+                                                                  initialDate:
+                                                                      _currentDateTime,
+                                                                  firstDate:
+                                                                      _currentDateTime,
+                                                                  lastDate: DateTime(
+                                                                      _currentDateTime
+                                                                              .year +
+                                                                          1,
+                                                                      _currentDateTime
+                                                                          .month,
+                                                                      _currentDateTime
+                                                                          .day),
+                                                                  confirmText:
+                                                                      "Select FROM",
+                                                                  cancelText:
+                                                                      "Cancel");
+                                                              setState(() {
+                                                                _fromDate =
+                                                                    _fromDate;
+                                                              });
+                                                            },
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Text(
+                                                                      "From Date",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Themes.DARK_BROWN_COOKIE)),
+                                                                  Container(
+                                                                      color: Colors.grey[
+                                                                          200],
+                                                                      padding: EdgeInsets.only(
+                                                                          left:
+                                                                              4.0,
+                                                                          right:
+                                                                              4.0,
+                                                                          top:
+                                                                              4.0,
+                                                                          bottom:
+                                                                              4.0),
+                                                                      child: Text(_fromDate ==
+                                                                              null
+                                                                          ? "DD/MM/YYYY"
+                                                                          : _fromDate.day.toString() +
+                                                                              "/" +
+                                                                              _fromDate.month.toString() +
+                                                                              "/" +
+                                                                              _fromDate.year.toString()))
+                                                                ])),
+                                                        SizedBox(width: 16.0),
+                                                        FlatButton(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    0.0),
+                                                            onPressed:
+                                                                () async {
+                                                              _toDate = await showDatePicker(
+                                                                  context:
+                                                                      context,
+                                                                  initialDate:
+                                                                      _currentDateTime,
+                                                                  firstDate:
+                                                                      _currentDateTime,
+                                                                  lastDate: DateTime(
+                                                                      _currentDateTime
+                                                                              .year +
+                                                                          1,
+                                                                      _currentDateTime
+                                                                          .month,
+                                                                      _currentDateTime
+                                                                          .day),
+                                                                  confirmText:
+                                                                      "Select FROM",
+                                                                  cancelText:
+                                                                      "Cancel");
+                                                              setState(() {
+                                                                _toDate =
+                                                                    _toDate;
+                                                              });
+                                                            },
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Text(
+                                                                      "To Date",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Themes.DARK_BROWN_COOKIE)),
+                                                                  Container(
+                                                                      color: Colors.grey[
+                                                                          200],
+                                                                      padding: EdgeInsets.only(
+                                                                          left:
+                                                                              4.0,
+                                                                          right:
+                                                                              4.0,
+                                                                          top:
+                                                                              4.0,
+                                                                          bottom:
+                                                                              4.0),
+                                                                      child: Text(_toDate ==
+                                                                              null
+                                                                          ? "DD/MM/YYYY"
+                                                                          : _toDate.day.toString() +
+                                                                              "/" +
+                                                                              _toDate.month.toString() +
+                                                                              "/" +
+                                                                              _toDate.year.toString()))
+                                                                ])),
+                                                      ],
+                                                    )
+                                                  : FlatButton(
+                                                      padding:
+                                                          EdgeInsets.all(0.0),
+                                                      onPressed: () async {
+                                                        DateTime _tempDate = await showDatePicker(
+                                                            context: context,
+                                                            initialDate:
+                                                                _currentDateTime,
+                                                            firstDate:
+                                                                _currentDateTime,
+                                                            lastDate: DateTime(
+                                                                _currentDateTime.year +
+                                                                    1,
+                                                                _currentDateTime
+                                                                    .month,
+                                                                _currentDateTime
+                                                                    .day),
+                                                            confirmText:
+                                                                "Select FROM",
+                                                            cancelText:
+                                                                "Cancel");
+                                                        setState(() {
+                                                          _dates.add(_tempDate);
+                                                        });
+                                                      },
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text("Date",
+                                                                style: TextStyle(
+                                                                    color: Themes
+                                                                        .DARK_BROWN_COOKIE)),
+                                                            Container(
+                                                                color: Colors
+                                                                    .grey[200],
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            4.0,
+                                                                        right:
+                                                                            4.0,
+                                                                        top:
+                                                                            4.0,
+                                                                        bottom:
+                                                                            4.0),
+                                                                child: Text(_fromDate ==
+                                                                        null
+                                                                    ? "DD/MM/YYYY"
+                                                                    : _fromDate
+                                                                            .day
+                                                                            .toString() +
+                                                                        "/" +
+                                                                        _fromDate
+                                                                            .month
+                                                                            .toString() +
+                                                                        "/" +
+                                                                        _fromDate
+                                                                            .year
+                                                                            .toString()))
+                                                          ]))),
+                                  _eventFrequency == Frequency.RANDOM &&
+                                          _dates != null
+                                      ? ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) =>
+                                              ListTile(
+                                                  leading: IconButton(
+                                                      icon: Icon(Icons.cancel),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _dates
+                                                              .removeAt(index);
+                                                        });
+                                                      }),
+                                                  title: Text(formattedDate(
+                                                      _dates[index]))),
+                                          itemCount: _dates.length,
+                                          shrinkWrap: true)
+                                      : SizedBox(),
                                   Padding(
                                       padding: const EdgeInsets.only(top: 16.0),
                                       child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: <Widget>[
-                                            FlatButton(
-                                                padding: EdgeInsets.all(0.0),
-                                                onPressed: () async {
-                                                  DateTime _tempDate =
-                                                      await showDatePicker(
-                                                          context: context,
-                                                          initialDate:
-                                                              _currentDateTime,
-                                                          firstDate:
-                                                              _currentDateTime,
-                                                          lastDate: DateTime(
-                                                              _currentDateTime.year +
-                                                                  1,
-                                                              _currentDateTime
-                                                                  .month,
-                                                              _currentDateTime
-                                                                  .day),
-                                                          confirmText:
-                                                              "Select FROM",
-                                                          cancelText: "Cancel");
-                                                  setState(() {
-                                                    _fromDate = _tempDate;
-                                                  });
-                                                },
-                                                child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Text("Date",
-                                                          style: TextStyle(
-                                                              color: Themes
-                                                                  .DARK_BROWN_COOKIE)),
-                                                      Container(
-                                                          color: Colors
-                                                              .grey[200],
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 4.0,
-                                                                  right: 4.0,
-                                                                  top: 4.0,
-                                                                  bottom: 4.0),
-                                                          child: Text(_fromDate ==
-                                                                  null
-                                                              ? "DD/MM/YYYY"
-                                                              : _fromDate.day
-                                                                      .toString() +
-                                                                  "/" +
-                                                                  _fromDate
-                                                                      .month
-                                                                      .toString() +
-                                                                  "/" +
-                                                                  _fromDate.year
-                                                                      .toString()))
-                                                    ])),
                                             FlatButton(
                                                 padding: EdgeInsets.all(0.0),
                                                 onPressed: () async {
@@ -632,8 +859,34 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                                         .ONCE
                                                                 ? "once"
                                                                 : "random";
-                                                    _model.date = _fromDate
-                                                        .toIso8601String();
+                                                    List<String>
+                                                        _tempListDates = [];
+                                                    if (_eventFrequency ==
+                                                        Frequency.ONCE)
+                                                      _tempListDates.add(_dates[
+                                                              0]
+                                                          .toIso8601String());
+                                                    else if (_eventFrequency ==
+                                                        Frequency.DAILY) {
+                                                      for (int i = 0;
+                                                          i <=
+                                                              _fromDate
+                                                                  .difference(
+                                                                      _toDate)
+                                                                  .inDays;
+                                                          i++) {
+                                                        _tempListDates.add(_fromDate
+                                                            .add(Duration(
+                                                                days: i))
+                                                            .toIso8601String());
+                                                      }
+                                                    } else if (_eventFrequency ==
+                                                        Frequency.RANDOM) {
+                                                      _dates.forEach((element) {
+                                                        _tempListDates.add(element
+                                                            .toIso8601String());
+                                                      });
+                                                    }
                                                     _model.startTime =
                                                         "${_timeOfDayStart.hour < 10 ? ("0${_timeOfDayStart.hour}") : _timeOfDayStart.hour}:${_timeOfDayStart.minute < 10 ? ("0${_timeOfDayStart.minute}") : _timeOfDayStart.minute}:00";
                                                     _model.endTime =
@@ -706,5 +959,9 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                         color: Colors.white)))
                                           ]))
                                 ]))))));
+  }
+
+  String formattedDate(DateTime dateTime) {
+    return "${dateTime.day}-${dateTime.month}-${dateTime.year}";
   }
 }
