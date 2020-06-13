@@ -30,46 +30,44 @@ class CreateFoodPointEventModel {
   int userId;
   String state;
 
-  CreateFoodPointEventModel({
-    this.name,
-    this.address,
-    this.city,
-    this.place,
-    this.cost,
-    this.fee,
-    this.frequency,
-    this.items,
-    this.date,
-    this.startTime,
-    this.endTime,
-    this.banner,
-    this.description,
-    this.eventOrganizer,
-    this.postBy,
-    this.userId,
-    this.state
-  });
+  CreateFoodPointEventModel(
+      {this.name,
+      this.address,
+      this.city,
+      this.place,
+      this.cost,
+      this.fee,
+      this.frequency,
+      this.items,
+      this.date,
+      this.startTime,
+      this.endTime,
+      this.banner,
+      this.description,
+      this.eventOrganizer,
+      this.postBy,
+      this.userId,
+      this.state});
 
   factory CreateFoodPointEventModel.fromJson(Map<String, dynamic> json) =>
       CreateFoodPointEventModel(
-        name: json["name"],
-        address: json["address"],
-        city: json["city"],
-        place: json["place"],
-        cost: json["cost"],
-        fee: json["fee"],
-        frequency: json["frequency"],
-        items: json["items"],
-        date: json["date"],
-        startTime: json["start_time"],
-        endTime: json["end_time"],
-        banner: json["banner"],
-        description: json["description"],
-        eventOrganizer: json["event_organizer"],
-        postBy: json["post_by"],
-        userId: json["user_id"],
-        state: json['state']
-      );
+          name: json["name"],
+          address: json["address"],
+          city: json["city"],
+          place: json["place"],
+          cost: json["cost"],
+          fee: json["fee"],
+          frequency: json["frequency"],
+          items: json["items"],
+          date: json["date"],
+          startTime: json["start_time"],
+          endTime: json["end_time"],
+          banner: json["banner"],
+          description: json["description"],
+          eventOrganizer: json["event_organizer"],
+          postBy: json["post_by"],
+          userId: json["user_id"],
+          state: json['state']);
 
   Map<String, dynamic> toJson() => {
         "name": name,

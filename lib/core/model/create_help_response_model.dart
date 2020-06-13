@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-CreateEventHelpResponseModel createEventHelpResponseModelFromJson(String str) => CreateEventHelpResponseModel.fromJson(json.decode(str));
+CreateEventHelpResponseModel createEventHelpResponseModelFromJson(String str) =>
+    CreateEventHelpResponseModel.fromJson(json.decode(str));
 
-String createEventHelpResponseModelToJson(CreateEventHelpResponseModel data) => json.encode(data.toJson());
+String createEventHelpResponseModelToJson(CreateEventHelpResponseModel data) =>
+    json.encode(data.toJson());
 
 class CreateEventHelpResponseModel {
   bool success;
@@ -17,15 +19,16 @@ class CreateEventHelpResponseModel {
     this.message,
   });
 
-  factory CreateEventHelpResponseModel.fromJson(Map<String, dynamic> json) => CreateEventHelpResponseModel(
-    success: json["success"],
-    message: Message.fromJson(json["message"]),
-  );
+  factory CreateEventHelpResponseModel.fromJson(Map<String, dynamic> json) =>
+      CreateEventHelpResponseModel(
+        success: json["success"],
+        message: Message.fromJson(json["message"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "message": message.toJson(),
-  };
+        "success": success,
+        "message": message.toJson(),
+      };
 }
 
 class Message {
@@ -66,40 +69,40 @@ class Message {
   });
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-    image: json["image"],
-    isCompleted: json["is_completed"],
-    completedCount: json["completed_count"],
-    id: json["id"],
-    name: json["name"],
-    address: json["address"],
-    city: json["city"],
-    type: json["type"],
-    date: DateTime.parse(json["date"]),
-    eventFrom: json["event_from"],
-    eventTo: json["event_to"],
-    description: json["description"],
-    postBy: json["post_by"],
-    userId: json["user_id"],
-    updatedAt: DateTime.parse(json["updatedAt"]),
-    createdAt: DateTime.parse(json["createdAt"]),
-  );
+        image: json["image"],
+        isCompleted: json["is_completed"],
+        completedCount: json["completed_count"],
+        id: json["id"],
+        name: json["name"],
+        address: json["address"],
+        city: json["city"],
+        type: json["type"],
+        date: DateTime.parse(json["date"]),
+        eventFrom: json["event_from"],
+        eventTo: json["event_to"],
+        description: json["description"],
+        postBy: json["post_by"],
+        userId: json["user_id"],
+        updatedAt: DateTime.parse(json["updatedAt"]),
+        createdAt: DateTime.parse(json["createdAt"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "image": image,
-    "is_completed": isCompleted,
-    "completed_count": completedCount,
-    "id": id,
-    "name": name,
-    "address": address,
-    "city": city,
-    "type": type,
-    "date": date.toIso8601String(),
-    "event_from": eventFrom,
-    "event_to": eventTo,
-    "description": description,
-    "post_by": postBy,
-    "user_id": userId,
-    "updatedAt": updatedAt.toIso8601String(),
-    "createdAt": createdAt.toIso8601String(),
-  };
+        "image": image,
+        "is_completed": isCompleted,
+        "completed_count": completedCount,
+        "id": id,
+        "name": name,
+        "address": address,
+        "city": city,
+        "type": type,
+        "date": date.toIso8601String(),
+        "event_from": eventFrom,
+        "event_to": eventTo,
+        "description": description,
+        "post_by": postBy,
+        "user_id": userId,
+        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt.toIso8601String(),
+      };
 }

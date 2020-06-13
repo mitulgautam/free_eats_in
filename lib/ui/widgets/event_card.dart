@@ -124,7 +124,7 @@ class EventCard extends StatelessWidget {
                                                             BorderRadius
                                                                 .circular(24.0),
                                                         child: Image.network(
-                                                            "https://he-s3.s3.amazonaws.com/media/avatars/mitulgautam/resized/180/3ac6ba2img_20190321_221417_860.jpg",
+                                                            helpModel.image,
                                                             height: 24.0))
                                                   ]))
                                           : SizedBox(),
@@ -146,9 +146,9 @@ class EventCard extends StatelessWidget {
                                       cardType == CardType.HELP_SECTION
                                           ? SizedBox()
                                           : RatingBar(
-                                              initialRating: foodPointModel
-                                                  .rating??0
-                                                  .roundToDouble(),
+                                              initialRating:
+                                                  foodPointModel.rating ??
+                                                      0.roundToDouble(),
                                               minRating: 0,
                                               itemSize: 24.0,
                                               direction: Axis.horizontal,

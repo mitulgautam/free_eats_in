@@ -4,8 +4,8 @@ import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/resources/themes.dart';
 import 'package:freeeatsin/ui/widgets/food_point_profile.dart';
 import 'package:freeeatsin/ui/widgets/help_profile.dart';
-import 'package:provider/provider.dart';
 import 'package:freeeatsin/ui/widgets/update_profile_view.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override

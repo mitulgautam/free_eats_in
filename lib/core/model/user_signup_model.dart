@@ -2,7 +2,6 @@
 //
 //     final userSignUpModel = userSignUpModelFromJson(jsonString);
 
-import 'dart:convert';
 import 'dart:io';
 
 class UserSignUpModel {
@@ -11,6 +10,7 @@ class UserSignUpModel {
   String email;
   String phoneNumber;
   String city;
+  String state;
   String pincode;
   File profileImage;
 
@@ -19,6 +19,7 @@ class UserSignUpModel {
       this.lastName,
       this.email,
       this.phoneNumber,
+      this.state,
       this.city,
       this.pincode,
       this.profileImage});

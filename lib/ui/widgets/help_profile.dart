@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freeeatsin/core/model/help_single_event_model.dart';
 import 'package:freeeatsin/core/model/profile_response_model.dart';
+import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/ui/widgets/add_help_event.dart';
@@ -20,8 +22,42 @@ class HelpCard extends StatelessWidget {
         : ListView.builder(
             itemBuilder: (context, index) => GestureDetector(
                 onTap: () async {
-                  await showDialog(
-                      context: context, builder: (context) => AddHelpEvent());
+                  dynamic response =
+                      await API.getSingleHelpEvent(helpCard[0].id);
+                  if (response is bool && response == false) {
+                    await showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                                title: Text("Error"),
+                                content: Center(
+                                    child: Text(
+                                        "Some error occurred. Please try again later!")),
+                                actions: <Widget>[
+                                  MaterialButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("Okay"))
+                                ]));
+                  } else if (response is HelpSingleEventModel) {
+                    var model = response.message[0];
+                    print(model.banner);
+                    await showDialog(
+                        context: context,
+                        builder: (context) => AddHelpEvent(
+                              isUpdate: true,
+                              city: model.city,
+                              place: model.place,
+                              postby: helpCard[0].postBy,
+                              banner: model.banner,
+                              id: model.id,
+                              eventDescription: model.description,
+                              address: model.address,
+                              state: model.state,
+                              helpType: model.type,
+                              eventName: model.name,
+                              timeOfDay: model.startTime,
+                              date: model.date,
+                            ));
+                  }
                 },
                 child: Card(
                     margin: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 8.0),

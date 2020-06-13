@@ -5,8 +5,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'dart:typed_data';
-
 CreateHelpEventModel createHelpEventModelFromJson(String str) =>
     CreateHelpEventModel.fromJson(json.decode(str));
 

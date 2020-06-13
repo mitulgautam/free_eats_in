@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/resources/strings.dart';
-import 'package:freeeatsin/ui/event_details_view.dart';
 import 'package:freeeatsin/ui/dashboard.dart';
+import 'package:freeeatsin/ui/event_details_view.dart';
 import 'package:freeeatsin/ui/login.dart';
 import 'package:freeeatsin/ui/profile_view.dart';
 import 'package:freeeatsin/ui/sign_up.dart';

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:freeeatsin/core/model/create_event_response_model.dart';
 import 'package:freeeatsin/core/model/create_food_point_event_model.dart';
 import 'package:freeeatsin/core/model/create_help_event_model.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
 import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
 import 'package:freeeatsin/core/model/food_point_single_event_model.dart';
+import 'package:freeeatsin/core/model/help_single_event_model.dart';
 import 'package:freeeatsin/core/model/profile_response_model.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/model/user_signup_model.dart';
@@ -34,6 +34,7 @@ class API {
       request.fields["phone_number"] = model.phoneNumber;
       request.fields["city"] = model.city;
       request.fields["pincode"] = model.pincode;
+      request.fields["state"] = model.state;
       request.files.add(await http.MultipartFile.fromPath(
           'profile_url', model.profileImage.path));
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
@@ -50,7 +51,6 @@ class API {
     http.Response response = await http.post(url,
         body: json.encode({"user_id": userId}).toString(),
         headers: getHeaders());
-    print(response.body);
     return ProfileResponseModel.fromJson(json.decode(response.body));
   }
 
@@ -70,7 +70,6 @@ class API {
   }
 
   static Future<dynamic> getDashboardHelps(int userId) async {
-    print("User ID: $userId");
     final String url = Strings.API_BASE_URL + Strings.API_DASHBOARD_HELP_EVENTS;
     http.Response response = await http.post(url,
         body: json.encode({"user_id": userId}), headers: getHeaders());
@@ -104,8 +103,41 @@ class API {
           .add(await http.MultipartFile.fromPath('banner', model.banner.path));
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
-      print(await response.stream.bytesToString());
       return response.statusCode == 201 ? true : false;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  static Future<dynamic> updateHelpEvent(
+      CreateHelpEventModel model,
+      String banner,
+      int eventID,
+      String postby,
+      String place,
+      String state,
+      int userid) async {
+    try {
+      final String url = Strings.API_BASE_URL + 'help/$eventID';
+      var request = http.MultipartRequest('PATCH', Uri.parse(url));
+      request.fields['description'] = model.description;
+      request.fields['address'] = model.address;
+      request.fields['start_time'] = model.startTime;
+      request.fields['date'] = model.date.toIso8601String();
+      request.fields['user_id'] = userid.toString();
+      request.fields['post_by'] = postby;
+      request.fields['name'] = model.name;
+      request.fields['city'] = model.city;
+      request.fields['place'] = place;
+      request.fields['end_time'] = "00:00:00";
+      request.fields['state'] = state;
+      request.fields['banner'] = banner;
+      request.fields['type'] = model.type;
+
+      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      var response = await request.send();
+      return response.statusCode == 200 ? true : false;
     } catch (e) {
       print(e);
     }
@@ -137,7 +169,6 @@ class API {
 
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
-      print(await response.stream.bytesToString());
       return response.statusCode == 201 ? true : false;
     } catch (e) {
       print(e);
@@ -169,38 +200,6 @@ class API {
     return false;
   }
 
-/*  static Future<dynamic> updateFoodPointEvent(
-      int eventId, CreateFoodPointEventModel model, String banner) async {
-    try {
-      final String url = Strings.API_BASE_URL +
-          Strings.API_POST_FOOD_POINT_EVENT +
-          "/$eventId";
-      var request = http.MultipartRequest('PATCH', Uri.parse(url));
-      request.fields['description'] = model.description;
-      request.fields['address'] = model.address;
-      request.fields['frequency'] = model.frequency;
-      request.fields['start_time'] = model.startTime;
-      request.fields['date'] = jsonEncode(model.date);
-      request.fields['user_id'] = model.userId.toString();
-      request.fields['post_by'] = model.postBy;
-      request.fields['name'] = model.name;
-      request.fields['city'] = model.city;
-      request.fields['place'] = model.place;
-      request.fields['end_time'] = model.endTime;
-      request.fields['items'] = model.items;
-      request.fields['fee'] = model.fee;
-      request.fields['cost'] = model.cost;
-      request.fields['event_organizer'] = model.eventOrganizer;
-      request.fields["banner"] = banner;
-      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
-      var response = await request.send();
-      return response.statusCode == 201 ? true : false;
-    } catch (e) {
-      print(e);
-    }
-    return false;
-  }*/
-
   static Future<dynamic> updateUserProfile(
       int userID, ProfileResponseModel model, File banner) async {
     try {
@@ -231,6 +230,15 @@ class API {
         await http.get(url + "/$eventId", headers: getHeaders());
     return response.statusCode == 200
         ? FoodPointSingleEventModel.fromJson(json.decode(response.body))
+        : false;
+  }
+
+  static Future<dynamic> getSingleHelpEvent(int eventId) async {
+    final String url = Strings.API_BASE_URL + Strings.API_POST_HELP_POST_EVENT;
+    http.Response response =
+        await http.get(url + "/$eventId", headers: getHeaders());
+    return response.statusCode == 200
+        ? HelpSingleEventModel.fromJson(json.decode(response.body))
         : false;
   }
 

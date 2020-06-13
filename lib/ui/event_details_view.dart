@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/core/model/food_point_single_event_model.dart';
+import 'package:freeeatsin/core/model/help_single_event_model.dart';
 import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/themes.dart';
 
@@ -16,25 +17,43 @@ class _EventDetailsViewState extends State<EventDetailsView> {
   bool isLoading = true;
   bool isLoadingError = false;
   FoodPointSingleEventModel _foodPointSingleEventModel;
+  HelpSingleEventModel _helpSingleEventModel;
   bool isHelp;
 
   @override
   void initState() {
     isHelp = widget.arguments["is-help"] == "yes" ? true : false;
-    API
-        .getSingleFoodPointEvent(int.parse(widget.arguments["post_id"]))
-        .then((value) {
-      if (value is bool) {
+    if (isHelp) {
+      API
+          .getSingleHelpEvent(int.parse(widget.arguments["post_id"]))
+          .then((value) {
+        if (value is bool) {
+          setState(() {
+            isLoadingError = true;
+          });
+        } else {
+          _helpSingleEventModel = value;
+        }
         setState(() {
-          isLoadingError = true;
+          isLoading = false;
         });
-      } else {
-        _foodPointSingleEventModel = value;
-      }
-      setState(() {
-        isLoading = false;
       });
-    });
+    } else {
+      API
+          .getSingleFoodPointEvent(int.parse(widget.arguments["post_id"]))
+          .then((value) {
+        if (value is bool) {
+          setState(() {
+            isLoadingError = true;
+          });
+        } else {
+          _foodPointSingleEventModel = value;
+        }
+        setState(() {
+          isLoading = false;
+        });
+      });
+    }
     super.initState();
   }
 
@@ -59,8 +78,8 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                                   builder: (context) => AlertDialog(
                                           title: Text("Notification"),
                                           content: Text(value
-                                              ? "Event Attend request Successfully! Cheers"
-                                              : "Event Attend request Unsuccessfully. Please try again!"),
+                                              ? "Help Event Attend request Successfully! Cheers"
+                                              : "Help Event Attend request Unsuccessfully. Please try again!"),
                                           actions: <Widget>[
                                             MaterialButton(
                                                 onPressed: () =>
@@ -112,7 +131,10 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                 : Stack(children: <Widget>[
                     AspectRatio(
                         aspectRatio: 16 / 9,
-                        child: Image.network("",
+                        child: Image.network(
+                            isHelp
+                                ? _helpSingleEventModel.message[0].banner
+                                : _foodPointSingleEventModel.message[0].banner,
                             height: MediaQuery.of(context).size.height / 4,
                             fit: BoxFit.cover)),
                     SingleChildScrollView(
@@ -130,14 +152,21 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Text(
-                                          _foodPointSingleEventModel
-                                              .message[0].eventName,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold)),
+                                      Expanded(
+                                        child: Text(
+                                            isHelp
+                                                ? _helpSingleEventModel
+                                                    .message[0].name
+                                                : _foodPointSingleEventModel
+                                                    .message[0].eventName,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                .copyWith(
+                                                    fontWeight: FontWeight.bold)),
+                                      ),
                                       Text(
                                           isHelp
                                               ? "FREE"
@@ -158,25 +187,21 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                                                           ? Colors.amber
                                                           : Colors.green))
                                     ]),
-/*                                ListTile(
-                                    contentPadding: EdgeInsets.all(0.0),
-                                    leading: Icon(Icons.calendar_today),
-                                    title: Text(
-                                        "${getWeek(_foodPointSingleEventModel.message[0].date.weekday)}, ${getMonth(_foodPointSingleEventModel.message[0].date.month)} ${_foodPointSingleEventModel.message[0].date.day}, ${_foodPointSingleEventModel.message[0].date.year}"),
-                                    subtitle: Text(_foodPointSingleEventModel
-                                        .message[0].startTime
-                                        .toString()),
-                                    trailing: Text(_foodPointSingleEventModel
-                                        .message[0].frequency
-                                        .toString())),*/
                                 ListTile(
                                     contentPadding: EdgeInsets.all(0.0),
-                                    title: Text(
-                                        "Place not added in model" ?? "N/A"),
+                                    title: Text(isHelp
+                                        ? _helpSingleEventModel
+                                                .message[0].place ??
+                                            "No place is added"
+                                        : _foodPointSingleEventModel
+                                            .message[0].place),
                                     leading: Icon(Icons.location_on),
-                                    subtitle: Text(_foodPointSingleEventModel
-                                            .message[0].address ??
-                                        "N/A")),
+                                    subtitle: Text(isHelp
+                                        ? _helpSingleEventModel
+                                            .message[0].address
+                                        : _foodPointSingleEventModel
+                                                .message[0].address ??
+                                            "N/A")),
                                 ListTile(
                                     contentPadding: EdgeInsets.all(0.0),
                                     title: Text(isHelp
@@ -194,8 +219,11 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                                     style:
                                         Theme.of(context).textTheme.headline6),
                                 Text(
-                                    _foodPointSingleEventModel
-                                        .message[0].description,
+                                    isHelp
+                                        ? _helpSingleEventModel
+                                            .message[0].description
+                                        : _foodPointSingleEventModel
+                                            .message[0].description,
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle2
@@ -204,12 +232,17 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                                             color: Colors.grey),
                                     maxLines: 4),
                                 SizedBox(height: 8.0),
-                                Text("Food Items",
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
+                                isHelp
+                                    ? SizedBox()
+                                    : Text("Food Items",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6),
                                 Text(
-                                    _foodPointSingleEventModel
-                                        .message[0].eventItem,
+                                    isHelp
+                                        ? ""
+                                        : _foodPointSingleEventModel
+                                            .message[0].eventItem,
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle2

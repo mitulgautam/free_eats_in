@@ -20,42 +20,42 @@ class _HelpState extends State<Help> {
       child: Consumer<HelpProvider>(
         builder: (_, model, __) => Column(children: <Widget>[
           AspectRatio(
-          aspectRatio: 16 / 7,
-          child: Carousel(images: [
-            Image.asset("assets/images/banner.png"),
-            Image.asset("assets/images/banner.png")
-          ], boxFit: BoxFit.cover, showIndicator: false)),
+              aspectRatio: 16 / 7,
+              child: Carousel(images: [
+                Image.asset("assets/images/banner.png"),
+                Image.asset("assets/images/banner.png")
+              ], boxFit: BoxFit.cover, showIndicator: false)),
           Expanded(
-          child: FutureBuilder(
-              future: API.getDashboardHelps(context
-                  .read<UserProvider>()
-                  .userLoginResponseModel
-                  .message
-                  .id),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  if (snapshot.data is DashboardHelpResponseModel) {
-                    DashboardHelpResponseModel model = snapshot.data;
-                    if (!model.success) return Text("Model doesn't return");
-                    if (model.message.length == 0)
-                      return Center(
-                          child: Text(
-                              "No event available! Check back later.",
-                              style: TextStyle(fontSize: 18.0)));
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => EventCard(
-                            helpModel: model.message[index],
-                            index: index,
-                            cardType: CardType.HELP_SECTION,
-                            isHelp: true),
-                        itemCount: model.message.length);
-                  } else
-                    return Text("Unable to load data");
-                }
-              }))
+              child: FutureBuilder(
+                  future: API.getDashboardHelps(context
+                      .read<UserProvider>()
+                      .userLoginResponseModel
+                      .message
+                      .id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      if (snapshot.data is DashboardHelpResponseModel) {
+                        DashboardHelpResponseModel model = snapshot.data;
+                        if (!model.success) return Text("Model doesn't return");
+                        if (model.message.length == 0)
+                          return Center(
+                              child: Text(
+                                  "No event available! Check back later.",
+                                  style: TextStyle(fontSize: 18.0)));
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => EventCard(
+                                helpModel: model.message[index],
+                                index: index,
+                                cardType: CardType.HELP_SECTION,
+                                isHelp: true),
+                            itemCount: model.message.length);
+                      } else
+                        return Text("Unable to load data");
+                    }
+                  }))
         ]),
       ),
     );

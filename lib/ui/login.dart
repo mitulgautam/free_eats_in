@@ -186,7 +186,7 @@ class _LoginState extends State<Login> {
                         FirebaseUser _user = result.user;
                         if (_user != null) {
                           _sharedPrefs.setString(
-                              Strings.LOGIN_NUMBER,_mobileNumber.text);
+                              Strings.LOGIN_NUMBER, _mobileNumber.text);
                           _sharedPrefs.setString(
                               Strings.LOGIN_FIREBASE_UID, _user.uid);
                           dynamic response =

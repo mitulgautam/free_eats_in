@@ -130,7 +130,8 @@ class FoodPointEventList extends StatelessWidget {
                                               RatingBar(
                                                   initialRating:
                                                       foodPointEvent[index]
-                                                          .rating??0,
+                                                              .rating ??
+                                                          0,
                                                   minRating: 0,
                                                   itemSize: 24.0,
                                                   direction: Axis.horizontal,

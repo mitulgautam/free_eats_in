@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:freeeatsin/core/model/city_model.dart';
 import 'package:freeeatsin/core/model/profile_response_model.dart';

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:freeeatsin/resources/strings.dart';
 
 DashboardEventsResponseModel dashboardEventsResponseModelFromJson(String str) =>

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/core/services/api.dart';

@@ -1,5 +1,3 @@
 import 'package:flutter/cupertino.dart';
 
-class FoodPointProvider with ChangeNotifier {
-
-}
+class FoodPointProvider with ChangeNotifier {}

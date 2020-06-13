@@ -129,7 +129,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
 
       if (_eventFrequency == Frequency.DAILY) {
         _fromDate = widget.date[0];
-        _toDate = widget.date[widget.date.length-1];
+        _toDate = widget.date[widget.date.length - 1];
       }
       _timeOfDayStart = widget.fromTime;
       _timeOfDayEnd = widget.toTime;
@@ -159,8 +159,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                 child: isLoading
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Center(child: CircularProgressIndicator()),
-                      )
+                        child: Center(child: CircularProgressIndicator()))
                     : Padding(
                         padding: const EdgeInsets.only(
                             left: 16.0, right: 16.0, top: 16.0, bottom: 16.0),
@@ -247,6 +246,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                     padding: const EdgeInsets.only(top: 8.0),
                                     child: DropdownButton<States>(
                                         isExpanded: true,
+                                        hint: Text("Select State"),
                                         value: _states,
                                         onChanged: (States newValue) {
                                           setState(() {
@@ -264,26 +264,32 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                       ? Text(_stateError,
                                           style: TextStyle(color: Colors.red))
                                       : SizedBox.shrink(),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: DropdownButton<String>(
-                                        isExpanded: true,
-                                        value: _city,
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            _city = newValue;
-                                          });
-                                        },
-                                        items: data.state
-                                            .where((element) =>
-                                                element.name == _states.name)
-                                            .first
-                                            .cities
-                                            .map((String city) {
-                                          return DropdownMenuItem<String>(
-                                              value: city, child: Text(city));
-                                        }).toList()),
-                                  ),
+                                  _states == null
+                                      ? SizedBox()
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: DropdownButton<String>(
+                                              isExpanded: true,
+                                              hint: Text("Select City"),
+                                              value: _city,
+                                              onChanged: (String newValue) {
+                                                setState(() {
+                                                  _city = newValue;
+                                                });
+                                              },
+                                              items: data.state
+                                                  .where((element) =>
+                                                      element.name ==
+                                                      _states.name)
+                                                  .first
+                                                  .cities
+                                                  .map((String city) {
+                                                return DropdownMenuItem<String>(
+                                                    value: city,
+                                                    child: Text(city));
+                                              }).toList()),
+                                        ),
                                   _cityErrorStatus
                                       ? Text(_cityError,
                                           style: TextStyle(color: Colors.red))
@@ -846,12 +852,32 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                   if (_fromDate == null)
                                                     errorText +=
                                                         " Select Date for event";
+                                                  if (_states == null) {
+                                                    setState(() {
+                                                      _stateErrorStatus = true;
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      _stateErrorStatus = false;
+                                                    });
+                                                  }
+                                                  if (_city == null) {
+                                                    setState(() {
+                                                      _cityErrorStatus = true;
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      _cityErrorStatus = false;
+                                                    });
+                                                  }
                                                   setState(() {
                                                     errorText.trim();
                                                   });
                                                   if (errorText == "" &&
                                                       _formKey.currentState
-                                                          .validate()) {
+                                                          .validate() &&
+                                                      !_cityErrorStatus &&
+                                                      !_stateErrorStatus) {
                                                     _formKey.currentState
                                                         .save();
 
