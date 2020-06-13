@@ -147,7 +147,7 @@ class EventCard extends StatelessWidget {
                                           ? SizedBox()
                                           : RatingBar(
                                               initialRating: foodPointModel
-                                                  .rating
+                                                  .rating??0
                                                   .roundToDouble(),
                                               minRating: 0,
                                               itemSize: 24.0,

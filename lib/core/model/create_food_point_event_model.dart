@@ -28,6 +28,7 @@ class CreateFoodPointEventModel {
   String eventOrganizer;
   String postBy;
   int userId;
+  String state;
 
   CreateFoodPointEventModel({
     this.name,
@@ -46,6 +47,7 @@ class CreateFoodPointEventModel {
     this.eventOrganizer,
     this.postBy,
     this.userId,
+    this.state
   });
 
   factory CreateFoodPointEventModel.fromJson(Map<String, dynamic> json) =>
@@ -66,6 +68,7 @@ class CreateFoodPointEventModel {
         eventOrganizer: json["event_organizer"],
         postBy: json["post_by"],
         userId: json["user_id"],
+        state: json['state']
       );
 
   Map<String, dynamic> toJson() => {

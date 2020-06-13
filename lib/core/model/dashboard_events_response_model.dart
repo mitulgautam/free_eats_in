@@ -1,10 +1,4 @@
-// To parse this JSON data, do
-//
-//     final dashboardEventsResponseModel = dashboardEventsResponseModelFromJson(jsonString);
-
 import 'dart:convert';
-
-import 'package:freeeatsin/core/model/city_model.dart';
 import 'package:freeeatsin/resources/strings.dart';
 
 DashboardEventsResponseModel dashboardEventsResponseModelFromJson(String str) =>
@@ -63,10 +57,12 @@ class FoodPointCard {
         city: json["city"],
         banner: json["banner"],
         fee: json["fee"],
-        costType: costTypeValues.map[json["cost_type"]],
+        costType: json["cost_type"] == null ||
+                json["cost_type"] == "free" ||
+                json["cost_type"] == ""
+            ? Cost.FREE
+            : Cost.PAID,
         startTime: json["start_time"],
         endTime: json["end_time"],
       );
 }
-
-final costTypeValues = EnumValues({"free": Cost.FREE, "paid": Cost.PAID});

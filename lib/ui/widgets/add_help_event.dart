@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -11,6 +12,29 @@ import 'package:freeeatsin/ui/widgets/common_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddHelpEvent extends StatefulWidget {
+  final bool isUpdate;
+  final String eventName;
+  final String eventDescription;
+  final String address;
+  final String state;
+  final String helpType;
+  final DateTime date;
+  final TimeOfDay timeOfDay;
+  final String city;
+
+  const AddHelpEvent(
+      {Key key,
+      this.isUpdate,
+      this.eventName,
+      this.eventDescription,
+      this.address,
+      this.helpType,
+      this.date,
+      this.timeOfDay,
+      this.city,
+      this.state})
+      : super(key: key);
+
   @override
   _AddHelpEventState createState() => _AddHelpEventState();
 }
@@ -27,9 +51,9 @@ class _AddHelpEventState extends State<AddHelpEvent> {
   TextEditingController _address;
   TextEditingController _helpType;
 
-  List<City> data;
+  StateAndCity data;
   States _states;
-  City _city;
+  String _city;
   bool isLoading = true;
   bool autoValidate = false;
   String errorText;
@@ -37,16 +61,29 @@ class _AddHelpEventState extends State<AddHelpEvent> {
   @override
   void initState() {
     CommonWidget.loadCrosswordAsset("assets/images/cities.json").then((value) {
-      data = cityFromJson(value);
-      data.sort((a, b) => a.city.compareTo(b.city));
+      data = StateAndCity.fromJson(json.decode(value));
       setState(() {
+        if (widget.isUpdate) {
+          _states =
+              data.state.where((element) => element.name == widget.state).first;
+          _city =
+              _states.cities.where((element) => element == widget.city).first;
+        }
         isLoading = false;
       });
     });
-    _eventName = TextEditingController();
-    _address = TextEditingController();
-    _eventDescription = TextEditingController();
-    _helpType = TextEditingController();
+    _eventName =
+        TextEditingController(text: widget.isUpdate ? widget.eventName : "");
+    _address =
+        TextEditingController(text: widget.isUpdate ? widget.eventName : "");
+    _eventDescription =
+        TextEditingController(text: widget.isUpdate ? widget.eventName : "");
+    _helpType =
+        TextEditingController(text: widget.isUpdate ? widget.eventName : "");
+    if (widget.isUpdate) {
+      _timeOfDayStart = widget.timeOfDay;
+      _fromDate = widget.date;
+    }
     super.initState();
   }
 
@@ -71,35 +108,41 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  GestureDetector(
-                                      onTap: () async {
-                                        _image = await ImagePicker.pickImage(
-                                            source: ImageSource.gallery);
-                                        setState(() {});
-                                      },
-                                      child: DottedBorder(
-                                          dashPattern: [4, 8, 1],
-                                          color: Themes.DARK_BROWN_COOKIE,
-                                          child: Align(
-                                              alignment: Alignment.center,
-                                              child: _image == null
-                                                  ? SizedBox(
-                                                      width: 64.0,
-                                                      height: 64.0,
-                                                      child: Align(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Icon(
-                                                              Icons.image,
-                                                              color: Themes
-                                                                  .DARK_BROWN_COOKIE)),
-                                                    )
-                                                  : Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Image.file(_image),
-                                                    )))),
+                                  widget.isUpdate
+                                      ? SizedBox()
+                                      : GestureDetector(
+                                          onTap: () async {
+                                            _image =
+                                                await ImagePicker.pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            setState(() {});
+                                          },
+                                          child: DottedBorder(
+                                              dashPattern: [4, 8, 1],
+                                              color: Themes.DARK_BROWN_COOKIE,
+                                              child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: _image == null
+                                                      ? SizedBox(
+                                                          width: 64.0,
+                                                          height: 64.0,
+                                                          child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Icon(
+                                                                  Icons.image,
+                                                                  color: Themes
+                                                                      .DARK_BROWN_COOKIE)),
+                                                        )
+                                                      : Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Image.file(
+                                                              _image),
+                                                        )))),
                                   TextFormField(
                                       autovalidate: autoValidate,
                                       validator: (_) => _.length < 3
@@ -139,34 +182,32 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                           _states = newValue;
                                         });
                                       },
-                                      items:
-                                          States.values.map((States classType) {
+                                      items: data.state.map((States state) {
                                         return DropdownMenuItem<States>(
-                                            value: classType,
-                                            child: Text(stateValues
-                                                .reverse[classType]));
+                                            value: state,
+                                            child: Text(state.name));
                                       }).toList()),
-                                  DropdownButtonFormField<City>(
-                                      validator: (_) => _ == null
-                                          ? "Please Select City"
-                                          : null,
+                                  DropdownButtonFormField<String>(
+                                      validator: (_) =>
+                                          _ ?? "Please Select City",
                                       autovalidate: autoValidate,
                                       decoration:
                                           InputDecoration(labelText: "City"),
                                       isExpanded: true,
-                                      value: _city ?? null,
-                                      onChanged: (City newValue) {
+                                      value: _city,
+                                      onChanged: (String newValue) {
                                         setState(() {
                                           _city = newValue;
                                         });
                                       },
-                                      items: data
+                                      items: data.state
                                           .where((element) =>
-                                              element.state == _states)
-                                          .map((City classType) {
-                                        return DropdownMenuItem<City>(
-                                            value: classType,
-                                            child: Text(classType.city));
+                                              element.name == _states.name)
+                                          .first
+                                          .cities
+                                          .map((String city) {
+                                        return DropdownMenuItem<String>(
+                                            value: city, child: Text(city));
                                       }).toList()),
                                   TextFormField(
                                       autovalidate: autoValidate,
@@ -338,7 +379,7 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                                       CreateHelpEventModel(
                                                           address:
                                                               _address.text,
-                                                          city: _city.city,
+                                                          city: _city,
                                                           description:
                                                               _eventDescription
                                                                   .text,

@@ -158,16 +158,17 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                                                           ? Colors.amber
                                                           : Colors.green))
                                     ]),
-                                ListTile(
+/*                                ListTile(
                                     contentPadding: EdgeInsets.all(0.0),
                                     leading: Icon(Icons.calendar_today),
                                     title: Text(
                                         "${getWeek(_foodPointSingleEventModel.message[0].date.weekday)}, ${getMonth(_foodPointSingleEventModel.message[0].date.month)} ${_foodPointSingleEventModel.message[0].date.day}, ${_foodPointSingleEventModel.message[0].date.year}"),
                                     subtitle: Text(_foodPointSingleEventModel
-                                        .message[0].startTime),
+                                        .message[0].startTime
+                                        .toString()),
                                     trailing: Text(_foodPointSingleEventModel
                                         .message[0].frequency
-                                        .toUpperCase())),
+                                        .toString())),*/
                                 ListTile(
                                     contentPadding: EdgeInsets.all(0.0),
                                     title: Text(

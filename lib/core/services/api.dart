@@ -7,6 +7,7 @@ import 'package:freeeatsin/core/model/create_help_event_model.dart';
 import 'package:freeeatsin/core/model/dashboard_events_response_model.dart';
 import 'package:freeeatsin/core/model/dashboard_help_response_model.dart';
 import 'package:freeeatsin/core/model/food_point_single_event_model.dart';
+import 'package:freeeatsin/core/model/profile_response_model.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/model/user_signup_model.dart';
 import 'package:freeeatsin/resources/strings.dart';
@@ -37,8 +38,6 @@ class API {
           'profile_url', model.profileImage.path));
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
-      print(response.statusCode);
-      print(await response.stream.bytesToString());
       return response.statusCode == 200 ? true : false;
     } catch (e) {
       print(e);
@@ -46,12 +45,13 @@ class API {
     return false;
   }
 
-  static Future<String> userProfile(int userId) async {
+  static Future<ProfileResponseModel> userProfile(int userId) async {
     final String url = Strings.API_BASE_URL + Strings.API_USER_PROFILE;
     http.Response response = await http.post(url,
         body: json.encode({"user_id": userId}).toString(),
         headers: getHeaders());
-    return response.body;
+    print(response.body);
+    return ProfileResponseModel.fromJson(json.decode(response.body));
   }
 
   static Future<dynamic> getDashboardEvents(int userId) async {
@@ -70,11 +70,10 @@ class API {
   }
 
   static Future<dynamic> getDashboardHelps(int userId) async {
+    print("User ID: $userId");
     final String url = Strings.API_BASE_URL + Strings.API_DASHBOARD_HELP_EVENTS;
     http.Response response = await http.post(url,
         body: json.encode({"user_id": userId}), headers: getHeaders());
-    print(userId);
-    print(response.statusCode);
     return response.statusCode == 200
         ? dashboardHelpResponseModelFromJson(response.body)
         : false;
@@ -105,6 +104,40 @@ class API {
           .add(await http.MultipartFile.fromPath('banner', model.banner.path));
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
+      print(await response.stream.bytesToString());
+      return response.statusCode == 201 ? true : false;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  static Future<dynamic> updateFoodPointEvent(
+      CreateFoodPointEventModel model, String banner, int eventID) async {
+    try {
+      final String url = Strings.API_BASE_URL + 'events/$eventID';
+      var request = http.MultipartRequest('PATCH', Uri.parse(url));
+      request.fields['description'] = model.description;
+      request.fields['address'] = model.address;
+      request.fields['frequency'] = model.frequency;
+      request.fields['start_time'] = model.startTime;
+      request.fields['date'] = jsonEncode(model.date);
+      request.fields['user_id'] = model.userId.toString();
+      request.fields['post_by'] = model.postBy;
+      request.fields['name'] = model.name;
+      request.fields['city'] = model.city;
+      request.fields['place'] = model.place;
+      request.fields['end_time'] = model.endTime;
+      request.fields['items'] = model.items;
+      request.fields['fee'] = model.fee;
+      request.fields['cost'] = model.cost;
+      request.fields['event_organizer'] = model.eventOrganizer;
+      request.fields['banner'] = banner;
+      request.fields['state'] = model.state;
+
+      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      var response = await request.send();
+      print(await response.stream.bytesToString());
       return response.statusCode == 201 ? true : false;
     } catch (e) {
       print(e);
@@ -136,12 +169,68 @@ class API {
     return false;
   }
 
+/*  static Future<dynamic> updateFoodPointEvent(
+      int eventId, CreateFoodPointEventModel model, String banner) async {
+    try {
+      final String url = Strings.API_BASE_URL +
+          Strings.API_POST_FOOD_POINT_EVENT +
+          "/$eventId";
+      var request = http.MultipartRequest('PATCH', Uri.parse(url));
+      request.fields['description'] = model.description;
+      request.fields['address'] = model.address;
+      request.fields['frequency'] = model.frequency;
+      request.fields['start_time'] = model.startTime;
+      request.fields['date'] = jsonEncode(model.date);
+      request.fields['user_id'] = model.userId.toString();
+      request.fields['post_by'] = model.postBy;
+      request.fields['name'] = model.name;
+      request.fields['city'] = model.city;
+      request.fields['place'] = model.place;
+      request.fields['end_time'] = model.endTime;
+      request.fields['items'] = model.items;
+      request.fields['fee'] = model.fee;
+      request.fields['cost'] = model.cost;
+      request.fields['event_organizer'] = model.eventOrganizer;
+      request.fields["banner"] = banner;
+      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      var response = await request.send();
+      return response.statusCode == 201 ? true : false;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }*/
+
+  static Future<dynamic> updateUserProfile(
+      int userID, ProfileResponseModel model, File banner) async {
+    try {
+      final String url = Strings.API_BASE_URL + "user" + "/$userID";
+      var request = http.MultipartRequest('PATCH', Uri.parse(url));
+      request.fields['first_name'] = model.message.firstName;
+      request.fields['last_name'] = model.message.lastName;
+      request.fields['email'] = model.message.email;
+      request.fields['city'] = model.message.city;
+      request.fields['address'] = model.message.address;
+      if (model.message.banner != null)
+        request.fields["banner"] = model.message.banner;
+      else
+        request.files
+            .add(await http.MultipartFile.fromPath('banner', banner.path));
+      request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      var response = await request.send();
+      return response.statusCode == 200 ? true : false;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
   static Future<dynamic> getSingleFoodPointEvent(int eventId) async {
     final String url = Strings.API_BASE_URL + Strings.API_POST_FOOD_POINT_EVENT;
     http.Response response =
         await http.get(url + "/$eventId", headers: getHeaders());
     return response.statusCode == 200
-        ? foodPointSingleEventModelFromJson(response.body)
+        ? FoodPointSingleEventModel.fromJson(json.decode(response.body))
         : false;
   }
 

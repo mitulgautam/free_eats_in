@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -14,14 +15,13 @@ import 'package:image_picker/image_picker.dart';
 class SignUp extends StatefulWidget {
   final Map<String, String> arguments;
 
-  const SignUp({Key key, this.arguments}) : super(key: key);
+  const SignUp({Key key, this.arguments});
 
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
-  final City selectCity = City(city: "Select City");
   bool autoValidate = false;
   bool isLoading = true;
   final _formKey = GlobalKey<FormState>();
@@ -30,18 +30,14 @@ class _SignUpState extends State<SignUp> {
   TextEditingController _email;
   TextEditingController _pincode;
   File _image;
-  List<City> data;
-  List<City> _cities;
+  StateAndCity data;
   States _states;
-  City _city;
+  String _city;
 
   @override
   void initState() {
-    _cities = [selectCity];
-    _city = selectCity;
     CommonWidget.loadCrosswordAsset("assets/images/cities.json").then((value) {
-      data = cityFromJson(value);
-      data.sort((a, b) => a.city.compareTo(b.city));
+      data = StateAndCity.fromJson(json.decode(value));
       setState(() {
         isLoading = false;
       });
@@ -152,69 +148,48 @@ class _SignUpState extends State<SignUp> {
                                                   ? null
                                                   : "Not a valid email address!",
                                           TextInputType.emailAddress),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: DropdownButtonFormField<States>(
-                                            autovalidate: autoValidate,
-                                            validator: (_) => _ == null
-                                                ? "Please Select State"
-                                                : null,
-                                            decoration: InputDecoration(
-                                                border: OutlineInputBorder(),
-                                                labelText: "State"),
-                                            isExpanded: true,
-                                            value: _states,
-                                            onChanged: (States newValue) {
-                                              setState(() {
-                                                _city = selectCity;
-                                                _cities = [selectCity];
-                                                _states = newValue;
-                                                _cities = data
-                                                    .where((element) =>
-                                                        element.state ==
-                                                        newValue)
-                                                    .toList();
-                                              });
-                                            },
-                                            items: States.values
-                                                .map((States classType) {
-                                              return DropdownMenuItem<States>(
-                                                  value: classType,
-                                                  child: Text(stateValues
-                                                      .reverse[classType]));
-                                            }).toList()),
-                                      ),
-                                      _city == null || _cities.length == 0
-                                          ? SizedBox()
-                                          : Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: DropdownButtonFormField<
-                                                      City>(
-                                                  validator: (_) => _ == null
-                                                      ? "Please Select City"
-                                                      : null,
-                                                  autovalidate: autoValidate,
-                                                  decoration: InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText: "City"),
-                                                  isExpanded: true,
-                                                  value: _city,
-                                                  onChanged: (City newValue) {
-                                                    setState(() {
-                                                      _city = newValue;
-                                                    });
-                                                  },
-                                                  items: _cities
-                                                      .map((City classType) {
-                                                    return DropdownMenuItem<
-                                                            City>(
-                                                        value: classType,
-                                                        child: Text(
-                                                            classType.city));
-                                                  }).toList()),
-                                            ),
+                                      DropdownButtonFormField<States>(
+                                          autovalidate: autoValidate,
+                                          validator: (_) => _ == null
+                                              ? "Please Select State"
+                                              : null,
+                                          decoration: InputDecoration(
+                                              labelText: "State"),
+                                          isExpanded: true,
+                                          value: _states,
+                                          onChanged: (States newValue) {
+                                            setState(() {
+                                              _city = null;
+                                              _states = newValue;
+                                            });
+                                          },
+                                          items: data.state.map((States state) {
+                                            return DropdownMenuItem<States>(
+                                                value: state,
+                                                child: Text(state.name));
+                                          }).toList()),
+                                      DropdownButtonFormField<String>(
+                                          validator: (_) =>
+                                              _ ?? "Please Select City",
+                                          autovalidate: autoValidate,
+                                          decoration: InputDecoration(
+                                              labelText: "City"),
+                                          isExpanded: true,
+                                          value: _city,
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              _city = newValue;
+                                            });
+                                          },
+                                          items: data.state
+                                              .where((element) =>
+                                                  element.name == _states.name)
+                                              .first
+                                              .cities
+                                              .map((String city) {
+                                            return DropdownMenuItem<String>(
+                                                value: city, child: Text(city));
+                                          }).toList()),
                                       _textFormField(
                                           _pincode,
                                           "Pincode",
@@ -237,7 +212,7 @@ class _SignUpState extends State<SignUp> {
                                               CommonWidget.loading(context);
                                               UserSignUpModel _signUpData =
                                                   UserSignUpModel(
-                                                      city: _city.city,
+                                                      city: _city,
                                                       profileImage: _image,
                                                       email: _email.text,
                                                       firstName:

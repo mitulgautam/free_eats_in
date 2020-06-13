@@ -50,6 +50,12 @@
       "languageVersion": "1.17"
     },
     {
+      "name": "country_pickers",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/country_pickers-1.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "crypto",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/crypto-2.1.4",
       "packageUri": "lib/",
@@ -58,6 +64,18 @@
     {
       "name": "cupertino_icons",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/cupertino_icons-0.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "date_range_picker",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/date_range_picker-1.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "datetime_picker_formfield",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/datetime_picker_formfield-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -116,10 +134,34 @@
       "languageVersion": "2.2"
     },
     {
+      "name": "flutter_chips_input",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_chips_input-1.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "flutter_colorpicker",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_colorpicker-0.3.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "flutter_form_builder",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_form_builder-3.10.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
+    },
+    {
       "name": "flutter_image_compress",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_image_compress-0.6.8",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "flutter_keyboard_visibility",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_keyboard_visibility-0.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
     },
     {
       "name": "flutter_plugin_android_lifecycle",
@@ -138,6 +180,18 @@
       "rootUri": "file:///C:/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "2.2"
+    },
+    {
+      "name": "flutter_touch_spin",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_touch_spin-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
+    },
+    {
+      "name": "flutter_typeahead",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_typeahead-1.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "1.19"
     },
     {
       "name": "flutter_web_plugins",
@@ -178,6 +232,12 @@
     {
       "name": "image_picker_platform_interface",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/image_picker_platform_interface-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/intl-0.16.1",
       "packageUri": "lib/",
       "languageVersion": "2.5"
     },
@@ -254,6 +314,12 @@
       "languageVersion": "2.4"
     },
     {
+      "name": "phone_number",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/phone_number-0.6.2+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
       "name": "platform",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/platform-2.2.1",
       "packageUri": "lib/",
@@ -278,6 +344,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "rating_bar",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/rating_bar-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "shared_preferences",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences-0.5.7+3",
       "packageUri": "lib/",
@@ -300,6 +372,12 @@
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+7",
       "packageUri": "lib/",
       "languageVersion": "2.1"
+    },
+    {
+      "name": "signature",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/signature-3.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
     },
     {
       "name": "sky_engine",
@@ -350,6 +428,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "validators",
+      "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/validators-2.0.0+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///C:/Users/mitul/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/vector_math-2.0.8",
       "packageUri": "lib/",
@@ -368,7 +452,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-05-31T14:12:58.137125Z",
+  "generated": "2020-06-08T15:18:32.970745Z",
   "generator": "pub",
-  "generatorVersion": "2.8.2"
+  "generatorVersion": "2.8.1"
 }

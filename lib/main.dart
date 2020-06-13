@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/core/services/api.dart';
@@ -26,7 +26,8 @@ class _AppState extends State<App> {
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
       ],
       child: MaterialApp(
-          home: DetermineRoute(),debugShowCheckedModeBanner: false,
+          home: DetermineRoute(),
+          debugShowCheckedModeBanner: false,
           onGenerateRoute: Router.onGenerateRoute,
           theme: ThemeData(
               fontFamily: Fonts.JAAPOKKI_REGULAR, primarySwatch: Colors.brown)),
