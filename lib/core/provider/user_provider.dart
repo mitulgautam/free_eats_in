@@ -45,6 +45,7 @@ class UserProvider with ChangeNotifier {
       _userLoginResponseModel.message.eventAttended =
           response.message.eventAttended;
       _profileResponseModel = response;
+      _userLoginResponseModel.message.bio = response.message.bio;
       notifyListeners();
     });
   }

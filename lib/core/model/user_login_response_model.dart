@@ -45,6 +45,7 @@ class Message {
   String alternatePhoneNo;
   String lastName;
   int eventPosted;
+  String bio;
   int eventAttended;
   DateTime createdDate;
   DateTime createdAt;
@@ -60,6 +61,7 @@ class Message {
       this.image,
       this.pincode,
       this.isActive,
+      this.bio,
       this.isVerified,
       this.alternatePhoneNo,
       this.lastName,
@@ -86,6 +88,7 @@ class Message {
       createdAt: DateTime.parse(json["createdAt"]),
       updatedAt: DateTime.parse(json["updatedAt"]),
       eventAttended: 0,
+      bio: json["bio"],
       eventPosted: 0);
 
   Map<String, dynamic> toJson() => {

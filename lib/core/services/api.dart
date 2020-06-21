@@ -34,13 +34,16 @@ class API {
       request.fields["email"] = model.email;
       request.fields["phone_number"] = model.phoneNumber;
       request.fields["city"] = model.city;
+      request.fields['bio'] = model.bio;
       request.fields["pincode"] = model.pincode;
       request.fields["state"] = model.state;
       request.files.add(await http.MultipartFile.fromPath(
           'profile_url', model.profileImage.path));
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
-      return response.statusCode == 200 ? true : false;
+      return response.statusCode == 200
+          ? json.decode(await response.stream.bytesToString())["id"]
+          : false;
     } catch (e) {
       print(e);
     }
@@ -52,6 +55,7 @@ class API {
     http.Response response = await http.post(url,
         body: json.encode({"user_id": userId}).toString(),
         headers: getHeaders());
+    print(response.body);
     return ProfileResponseModel.fromJson(json.decode(response.body));
   }
 
@@ -98,7 +102,9 @@ class API {
       request.fields['end_time'] = model.endTime;
       request.fields['items'] = model.items;
       request.fields['fee'] = model.fee;
+      request.fields['fee'] = model.fee;
       request.fields['cost'] = model.cost;
+      request.fields['state'] = model.state;
       request.fields['event_organizer'] = model.eventOrganizer;
       if (model.banner != null)
         request.files.add(
@@ -174,6 +180,7 @@ class API {
 
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
+
       return response.statusCode == 201 ? true : false;
     } catch (e) {
       print(e);
@@ -224,6 +231,8 @@ class API {
       request.fields['email'] = model.message.email;
       request.fields['city'] = model.message.city;
       request.fields['address'] = model.message.address;
+      request.fields['bio']=model.message.bio;
+      request.fields['state']=model.message.state;
       if (model.message.banner != null)
         request.fields["banner"] = model.message.banner;
       else

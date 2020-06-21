@@ -22,6 +22,7 @@ class UpdateProfileView extends StatefulWidget {
   final String email;
   final String address;
   final String banner;
+  final String bio;
 
   const UpdateProfileView(
       {Key key,
@@ -32,7 +33,8 @@ class UpdateProfileView extends StatefulWidget {
       this.email,
       this.address,
       this.banner,
-      this.state});
+      this.state,
+      this.bio});
 
   @override
   _UpdateProfileViewState createState() => _UpdateProfileViewState();
@@ -44,6 +46,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _firstName;
   TextEditingController _lastName;
+  TextEditingController _bio;
   TextEditingController _email;
   TextEditingController _pincode;
   String _stateError = "Please select state!";
@@ -70,10 +73,11 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       });
     });
 
-    _firstName = TextEditingController(text: widget.firstName);
-    _lastName = TextEditingController(text: widget.lastName);
-    _email = TextEditingController(text: widget.email);
-    _pincode = TextEditingController(text: widget.address);
+    _firstName = TextEditingController(text: widget.firstName ?? "");
+    _lastName = TextEditingController(text: widget.lastName ?? "");
+    _email = TextEditingController(text: widget.email ?? "");
+    _bio = TextEditingController(text: widget.bio ?? "");
+    _pincode = TextEditingController(text: widget.address ?? "");
     super.initState();
   }
 
@@ -107,7 +111,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           SizedBox(
-                                              width: MediaQuery.of(context).size.width /
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
                                                   3,
                                               height: MediaQuery.of(context)
                                                       .size
@@ -125,29 +131,27 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                                       dashPattern: [4, 8, 1],
                                                       color: Themes
                                                           .DARK_BROWN_COOKIE,
-                                                      child: widget.banner != null &&
+                                                      child: widget.banner !=
+                                                                  null &&
                                                               _image == null
                                                           ? Image.network(
-                                                              widget.banner)
+                                                              widget.banner,
+                                                              fit: BoxFit.cover)
                                                           : Align(
-                                                              alignment: Alignment
-                                                                  .center,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
                                                               child: _image ==
                                                                       null
                                                                   ? Align(
-                                                                      alignment: Alignment
-                                                                          .center,
-                                                                      child:
-                                                                          Icon(
+                                                                      alignment: Alignment.center,
+                                                                      child: Icon(
                                                                         Icons
                                                                             .image,
                                                                         color: Themes
                                                                             .DARK_BROWN_COOKIE,
                                                                       ))
-                                                                  : SizedBox(
-                                                                      width: MediaQuery.of(context).size.width / 3,
-                                                                      height: MediaQuery.of(context).size.width / 3,
-                                                                      child: Padding(padding: const EdgeInsets.all(8.0), child: Image.file(_image, fit: BoxFit.cover))))))),
+                                                                  : SizedBox(width: MediaQuery.of(context).size.width / 3, height: MediaQuery.of(context).size.width / 3, child: Padding(padding: const EdgeInsets.all(8.0), child: Image.file(_image, fit: BoxFit.cover))))))),
                                           SizedBox(height: 16.0),
                                           _textFormField(
                                               _firstName,
@@ -157,6 +161,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                                   : null,
                                               null),
                                           _textFormField(_lastName, "Last Name",
+                                              (String _) => null, null),
+                                          _textFormField(_bio, "Bio",
                                               (String _) => null, null),
                                           Padding(
                                               padding:
@@ -255,6 +261,9 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                                                                   _pincode.text,
                                                               email:
                                                                   _email.text,
+                                                              bio: _bio.text,
+                                                              state: model
+                                                                  .state.name,
                                                               firstName:
                                                                   _firstName
                                                                       .text,

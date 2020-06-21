@@ -6,11 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/core/model/city_model.dart';
 import 'package:freeeatsin/core/model/user_signup_model.dart';
+import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/resources/themes.dart';
 import 'package:freeeatsin/ui/widgets/common_widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   final Map<String, String> arguments;
@@ -28,6 +30,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController _firstName;
   TextEditingController _lastName;
   TextEditingController _email;
+  TextEditingController _bio;
   TextEditingController _pincode;
   File _image;
   StateAndCity data;
@@ -46,6 +49,7 @@ class _SignUpState extends State<SignUp> {
     _lastName = TextEditingController();
     _email = TextEditingController();
     _pincode = TextEditingController();
+    _bio = TextEditingController();
     super.initState();
   }
 
@@ -139,6 +143,8 @@ class _SignUpState extends State<SignUp> {
                                           null),
                                       _textFormField(_lastName, "Last Name",
                                           (String _) => null, null),
+                                      _textFormField(_bio, "Bio",
+                                          (String _) => null, null),
                                       _textFormField(
                                           _email,
                                           "E-mail",
@@ -222,6 +228,7 @@ class _SignUpState extends State<SignUp> {
                                                       firstName:
                                                           _firstName.text,
                                                       state: _states.name,
+                                                      bio: _bio.text,
                                                       lastName:
                                                           _lastName.text + " ",
                                                       phoneNumber: widget
@@ -235,7 +242,12 @@ class _SignUpState extends State<SignUp> {
                                               if (response is bool &&
                                                   response == false) {
                                                 print("Error occurred");
-                                              } else {
+                                              } else if (response is int) {
+                                                context
+                                                    .watch<UserProvider>()
+                                                    .userLoginResponseModel
+                                                    .message
+                                                    .id = response;
                                                 Navigator.pushReplacementNamed(
                                                     context, Strings.HOMEPAGE);
                                               }

@@ -16,7 +16,7 @@ class Message {
   String firstName;
   String email;
   String lastName;
-  Null bio;
+  String bio;
   String city;
   int isVerified;
   String state;

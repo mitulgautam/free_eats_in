@@ -65,6 +65,10 @@ class _ProfileState extends State<Profile> {
                                                 .profileResponseModel
                                                 .message
                                                 .firstName,
+                                            bio: model.profileResponseModel
+                                                .message.bio,
+                                            state: model.profileResponseModel
+                                                .message.state,
                                             lastName: model.profileResponseModel
                                                 .message.lastName)));
                               })
@@ -127,6 +131,16 @@ class _ProfileState extends State<Profile> {
                                                           .userLoginResponseModel
                                                           .message
                                                           .email,
+                                                      style: TextStyle(
+                                                          color: Themes
+                                                              .DARK_BROWN_COOKIE,
+                                                          fontSize: 16.0)),
+                                                  spacer12,
+                                                  Text(
+                                                      model
+                                                          .userLoginResponseModel
+                                                          .message
+                                                          .bio,
                                                       style: TextStyle(
                                                           color: Themes
                                                               .DARK_BROWN_COOKIE,
