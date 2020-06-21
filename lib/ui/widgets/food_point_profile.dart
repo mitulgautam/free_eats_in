@@ -41,7 +41,7 @@ class FoodPointEventList extends StatelessWidget {
                                       child: Text("Okay"))
                                 ]));
                   } else if (response is FoodPointSingleEventModel) {
-                    var model = response.message[index];
+                    var model = response.message[0];
                     await showDialog(
                         context: context,
                         builder: (context) => AddNewFoodPointEvent(
