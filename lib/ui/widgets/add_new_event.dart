@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freeeatsin/core/model/city_model.dart';
 import 'package:freeeatsin/core/model/create_food_point_event_model.dart';
@@ -634,29 +635,47 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                             style: TextStyle(
                                                                 color: Themes
                                                                     .DARK_BROWN_COOKIE)),
-                                                        Container(
-                                                            color: Colors
-                                                                .grey[200],
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 4.0,
-                                                                    right: 4.0,
-                                                                    top: 4.0,
-                                                                    bottom:
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: <Widget>[
+                                                            Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
                                                                         4.0),
-                                                            child: Text(_fromDate ==
-                                                                    null
-                                                                ? "DD/MM/YYYY"
-                                                                : _fromDate.day
-                                                                        .toString() +
-                                                                    "/" +
-                                                                    _fromDate
-                                                                        .month
-                                                                        .toString() +
-                                                                    "/" +
-                                                                    _fromDate
-                                                                        .year
-                                                                        .toString()))
+                                                                child: Icon(
+                                                                    Icons.add)),
+                                                            Container(
+                                                                color: Colors
+                                                                    .grey[200],
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            4.0,
+                                                                        right:
+                                                                            4.0,
+                                                                        top:
+                                                                            4.0,
+                                                                        bottom:
+                                                                            4.0),
+                                                                child: Text(_fromDate ==
+                                                                        null
+                                                                    ? "DD/MM/YYYY"
+                                                                    : _fromDate
+                                                                            .day
+                                                                            .toString() +
+                                                                        "/" +
+                                                                        _fromDate
+                                                                            .month
+                                                                            .toString() +
+                                                                        "/" +
+                                                                        _fromDate
+                                                                            .year
+                                                                            .toString())),
+                                                          ],
+                                                        )
                                                       ]))),
                                   _eventFrequency == Frequency.RANDOM &&
                                           _dates != null
@@ -836,7 +855,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                     autoValidate = true;
                                                   });
                                                   errorText = "";
-                                               /*   if (_image == null &&
+                                                  /*   if (_image == null &&
                                                       !widget.isUpdate)
                                                     errorText +=
                                                         " Select Event Banner.";*/
