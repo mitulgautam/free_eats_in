@@ -22,33 +22,34 @@ class CreateHelpEventModel {
   File banner;
   String description;
   int userId;
+  String state;
 
-  CreateHelpEventModel({
-    this.name,
-    this.address,
-    this.city,
-    this.type,
-    this.date,
-    this.startTime,
-    this.endTime,
-    this.banner,
-    this.description,
-    this.userId,
-  });
+  CreateHelpEventModel(
+      {this.name,
+      this.address,
+      this.city,
+      this.type,
+      this.date,
+      this.startTime,
+      this.endTime,
+      this.banner,
+      this.description,
+      this.userId,
+      this.state});
 
   factory CreateHelpEventModel.fromJson(Map<String, dynamic> json) =>
       CreateHelpEventModel(
-        name: json["name"],
-        address: json["address"],
-        city: json["city"],
-        type: json["type"],
-        date: DateTime.parse(json["date"]),
-        startTime: json["start_time"],
-        endTime: json["end_time"],
-        banner: json["banner"],
-        description: json["description"],
-        userId: json["user_id"],
-      );
+          name: json["name"],
+          address: json["address"],
+          city: json["city"],
+          type: json["type"],
+          date: DateTime.parse(json["date"]),
+          startTime: json["start_time"],
+          endTime: json["end_time"],
+          banner: json["banner"],
+          description: json["description"],
+          userId: json["user_id"],
+          state: json['state'] ?? null);
 
   Map<String, dynamic> toJson() => {
         "name": name,

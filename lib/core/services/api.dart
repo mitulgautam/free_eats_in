@@ -10,6 +10,7 @@ import 'package:freeeatsin/core/model/help_single_event_model.dart';
 import 'package:freeeatsin/core/model/profile_response_model.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/model/user_signup_model.dart';
+import 'package:freeeatsin/main.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:http/http.dart' as http;
 
@@ -99,8 +100,12 @@ class API {
       request.fields['fee'] = model.fee;
       request.fields['cost'] = model.cost;
       request.fields['event_organizer'] = model.eventOrganizer;
-      request.files
-          .add(await http.MultipartFile.fromPath('banner', model.banner.path));
+      if (model.banner != null)
+        request.files.add(
+            await http.MultipartFile.fromPath('banner', model.banner.path));
+      else
+        request.files.add(
+            await http.MultipartFile.fromPath('banner', defaultImage.path));
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
       return response.statusCode == 201 ? true : false;
@@ -187,12 +192,21 @@ class API {
       request.fields['date'] = model.date.toIso8601String();
       request.fields['user_id'] = model.userId.toString();
       request.fields['city'] = model.city;
+      request.fields['state'] = model.state;
       request.fields['type'] = model.type;
       request.fields['description'] = model.description;
-      request.files
-          .add(await http.MultipartFile.fromPath('banner', model.banner.path));
+
+      if (model.banner != null)
+        request.files.add(
+            await http.MultipartFile.fromPath('banner', model.banner.path));
+      else
+        request.files.add(
+            await http.MultipartFile.fromPath('banner', defaultImage.path));
+
       request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       var response = await request.send();
+
+      print(await response.stream.bytesToString());
       return response.statusCode == 200 ? true : false;
     } catch (e) {
       print(e);

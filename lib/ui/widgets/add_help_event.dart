@@ -167,8 +167,8 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                           labelText: "Event Name")),
                                   TextFormField(
                                       autovalidate: autoValidate,
-                                      validator: (_) => _.length < 15
-                                          ? "Event description should be greater than 15 letters"
+                                      validator: (_) => _.length < 10
+                                          ? "Event description should be greater than 10 letters"
                                           : null,
                                       controller: _eventDescription,
                                       decoration: InputDecoration(
@@ -184,6 +184,7 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
                                     child: DropdownButton<States>(
+                                        hint: Text("Select State"),
                                         isExpanded: true,
                                         value: _states,
                                         onChanged: (States newValue) {
@@ -382,10 +383,10 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                                   autoValidate = true;
                                                 });
                                                 errorText = "";
-                                                if (_image == null &&
+/*                                                if (_image == null &&
                                                     !widget.isUpdate)
                                                   errorText +=
-                                                      " Select Event Banner.";
+                                                      " Select Event Banner.";*/
                                                 if (_timeOfDayStart == null)
                                                   errorText +=
                                                       " Select Start Time.";
@@ -422,12 +423,19 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                                   CommonWidget.loading(context);
                                                   CreateHelpEventModel help =
                                                       CreateHelpEventModel(
+                                                          userId: context
+                                                              .read<
+                                                                  UserProvider>()
+                                                              .userLoginResponseModel
+                                                              .message
+                                                              .id,
                                                           address:
                                                               _address.text,
                                                           city: _city,
                                                           description:
                                                               _eventDescription
                                                                   .text,
+                                                          state: _states.name,
                                                           name: _eventName.text,
                                                           type: _helpType.text,
                                                           date: _fromDate,
@@ -445,7 +453,9 @@ class _AddHelpEventState extends State<AddHelpEvent> {
                                                             widget.place,
                                                             widget.state,
                                                             Provider.of<UserProvider>(
-                                                                    context,listen: false)
+                                                                    context,
+                                                                    listen:
+                                                                        false)
                                                                 .profileResponseModel
                                                                 .message
                                                                 .id);

@@ -220,8 +220,8 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                           labelText: "Organizer Name")),
                                   TextFormField(
                                       autovalidate: autoValidate,
-                                      validator: (_) => _.length < 15
-                                          ? "Event description should be greater than 15 letters"
+                                      validator: (_) => _.length < 10
+                                          ? "Event description should be greater than 10 letters"
                                           : null,
                                       controller: _eventDescription,
                                       decoration: InputDecoration(
@@ -236,7 +236,7 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                           InputDecoration(labelText: "Place")),
                                   TextFormField(
                                       autovalidate: autoValidate,
-                                      validator: (_) => _.length < 15
+                                      validator: (_) => _.length < 10
                                           ? "Address should be greater than 10 letters"
                                           : null,
                                       controller: _address,
@@ -836,10 +836,10 @@ class _AddNewFoodPointEventState extends State<AddNewFoodPointEvent> {
                                                     autoValidate = true;
                                                   });
                                                   errorText = "";
-                                                  if (_image == null &&
+                                               /*   if (_image == null &&
                                                       !widget.isUpdate)
                                                     errorText +=
-                                                        " Select Event Banner.";
+                                                        " Select Event Banner.";*/
                                                   if (_eventFrequency == null)
                                                     errorText +=
                                                         " Select Event Frequency.";

@@ -1,16 +1,31 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:freeeatsin/core/model/user_login_response_model.dart';
 import 'package:freeeatsin/core/provider/user_provider.dart';
 import 'package:freeeatsin/core/services/api.dart';
 import 'package:freeeatsin/resources/fonts.dart';
 import 'package:freeeatsin/resources/strings.dart';
 import 'package:freeeatsin/routes.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-main() {
+File defaultImage;
+
+main() async {
   runApp(App());
+  var temp = await rootBundle.load("assets/images/free_eats_logo.png");
+  String dir = (await getApplicationDocumentsDirectory()).path;
+  defaultImage = await writeToFile(temp, '$dir/logo');
+}
+
+Future<File> writeToFile(ByteData data, String path) {
+  final buffer = data.buffer;
+  return new File(path)
+      .writeAsBytes(buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 }
 
 class App extends StatefulWidget {

@@ -127,7 +127,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget _otpView() {
-    return SingleChildScrollView(
+    return SingleChildScrollView(reverse: true,
       physics: BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -253,10 +253,11 @@ class _LoginState extends State<Login> {
           if (_user != null) Navigator.pushNamed(context, Strings.HOMEPAGE);
         },
         verificationFailed: (AuthException authException) {
-          print(authException);
+          print(authException.message);
         },
         codeSent: (String verificationId, [int forceResendingToken]) async {
           _verificationId = verificationId;
+          print(verificationId);
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           _verificationId = verificationId;
